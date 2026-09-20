@@ -1,27 +1,29 @@
 // -----------------------------------------------------------------------------
 // Minimal in-memory stand-in for the Gladys SDK object, for unit tests.
 //
-// It reproduces the only surface the device modules rely on:
+// It reproduces the only surface the modules rely on:
 //   - externalIds(type, platformId) -> { device, feature(key) }
-//   - publishState / publishStates   -> record calls so tests can assert them
-//   - publishCameraImage             -> record calls so tests can assert them
-//   - publishTransports              -> record calls so tests can assert them
-//   - setConnectionStatus            -> record calls so tests can assert them
-// This lets us test the pure "wiring" logic (discovery payloads, dispatch)
-// without a running Gladys server or a real WebSocket.
+//   - publishStates / publishDiscoveredDevices / publishTransports /
+//     setConnectionStatus -> recorded so tests can assert them
+//   - httpClient.get('/house')     -> scriptable answer
 // -----------------------------------------------------------------------------
 
-export function createFakeGladys() {
+export function createFakeGladys({ houses = [] } = {}) {
   const published = [];
-  const cameraImages = [];
+  const batches = [];
   const transports = [];
   const connectionStatuses = [];
+  const discovered = [];
+  const httpCalls = [];
 
   return {
     published,
-    cameraImages,
+    batches,
     transports,
     connectionStatuses,
+    discovered,
+    httpCalls,
+    houses,
 
     externalIds(type, platformId) {
       const device = `${type}:${platformId}`;
@@ -36,21 +38,39 @@ export function createFakeGladys() {
     },
 
     async publishStates(states) {
+      batches.push(states);
       for (const s of states) {
-        published.push({ featureExternalId: s.device_feature_external_id, state: s.state });
+        published.push({
+          featureExternalId: s.device_feature_external_id,
+          state: s.state,
+          text: s.text,
+        });
       }
-    },
-
-    async publishCameraImage(deviceExternalId, image) {
-      cameraImages.push({ deviceExternalId, image });
     },
 
     async publishTransports(entries) {
       transports.push(...entries);
     },
 
+    async publishDiscoveredDevices(devices) {
+      discovered.push(devices);
+    },
+
     async setConnectionStatus(connected, message) {
       connectionStatuses.push({ connected, message });
+    },
+
+    httpClient: {
+      async get(path) {
+        httpCalls.push(path);
+        if (path === '/house') {
+          if (houses instanceof Error) {
+            throw houses;
+          }
+          return houses;
+        }
+        throw new Error(`unexpected GET ${path}`);
+      },
     },
   };
 }

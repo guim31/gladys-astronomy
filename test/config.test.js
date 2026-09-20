@@ -1,33 +1,39 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { normalizeConfig, DEFAULT_CONFIG } from '../src/config.js';
+import { DEFAULT_CONFIG, LIMITS, hasLocationOverride, normalizeConfig } from '../src/config.js';
 
-test('normalizeConfig returns the defaults when called with no argument', () => {
+test('normalizeConfig returns the defaults for an empty config', () => {
   assert.deepEqual(normalizeConfig(), DEFAULT_CONFIG);
+  assert.deepEqual(normalizeConfig({}), DEFAULT_CONFIG);
 });
 
-test('normalizeConfig keeps user values over the defaults', () => {
-  const config = normalizeConfig({ latitude: 45.5, longitude: -73.6, unit: 'fahrenheit' });
-  assert.equal(config.latitude, 45.5);
-  assert.equal(config.longitude, -73.6);
-  assert.equal(config.unit, 'fahrenheit');
+test('numbers arriving as strings are parsed and clamped', () => {
+  const config = normalizeConfig({ refresh_minutes: '10', bortle: '99' });
+  assert.equal(config.refresh_minutes, 10);
+  assert.equal(config.bortle, LIMITS.bortle.max);
+  assert.equal(normalizeConfig({ refresh_minutes: 0 }).refresh_minutes, LIMITS.refresh_minutes.min);
+  assert.equal(
+    normalizeConfig({ meteor_min_zhr: 'abc' }).meteor_min_zhr,
+    DEFAULT_CONFIG.meteor_min_zhr,
+  );
 });
 
-test('normalizeConfig coerces numeric strings coming from a form', () => {
-  const config = normalizeConfig({ latitude: '48.8', longitude: '2.3', poll_frequency: '600' });
-  assert.equal(config.latitude, 48.8);
-  assert.equal(config.longitude, 2.3);
-  assert.equal(config.poll_frequency, 600);
-  assert.equal(typeof config.poll_frequency, 'number');
+test('language falls back to French on anything unknown', () => {
+  assert.equal(normalizeConfig({ language: 'EN' }).language, 'en');
+  assert.equal(normalizeConfig({ language: 'de' }).language, 'fr');
 });
 
-test('normalizeConfig falls back to the default for a missing numeric field', () => {
-  const config = normalizeConfig({ unit: 'celsius' });
-  assert.equal(config.poll_frequency, DEFAULT_CONFIG.poll_frequency);
+test('booleans accept the string form sent by some forms', () => {
+  assert.equal(normalizeConfig({ aurora_enabled: 'false' }).aurora_enabled, false);
+  assert.equal(normalizeConfig({ aurora_enabled: false }).aurora_enabled, false);
+  assert.equal(normalizeConfig({ aurora_enabled: null }).aurora_enabled, true);
 });
 
-test('GLADYS_PREFER_LOCAL defaults to true and only an explicit false disables it', () => {
-  assert.equal(normalizeConfig().GLADYS_PREFER_LOCAL, true);
-  assert.equal(normalizeConfig({ GLADYS_PREFER_LOCAL: true }).GLADYS_PREFER_LOCAL, true);
-  assert.equal(normalizeConfig({ GLADYS_PREFER_LOCAL: false }).GLADYS_PREFER_LOCAL, false);
+test('the location override needs both coordinates', () => {
+  assert.equal(hasLocationOverride(normalizeConfig({ latitude: '48.8' })), false);
+  const both = normalizeConfig({ latitude: '48.8', longitude: '2.3', elevation: '' });
+  assert.equal(hasLocationOverride(both), true);
+  assert.equal(both.elevation, 0);
+  assert.equal(normalizeConfig({ latitude: 'x', longitude: 2 }).latitude, null);
+  assert.equal(normalizeConfig({ latitude: 95, longitude: 2 }).latitude, 90);
 });

@@ -1,102 +1,244 @@
 {
   "manifest_version": 1,
   "type": "device",
-  "name": "Demo Devices Template",
+  "name": "Astronomie",
   "description": {
-    "en": "Starter template showing sensors, a switch, a dimmable light and a smart plug.",
-    "fr": "Template de démarrage : capteurs, interrupteur, lampe variable et prise connectée."
+    "en": "Eclipses, planets, meteor showers, observing nights, seasons and aurora forecasts for your home.",
+    "fr": "Éclipses, planètes, étoiles filantes, nuit d'observation, saisons et aurores pour votre maison."
   },
-  "version": "1.0.0",
-  "docker_image": "ghcr.io/gladysassistant/integration-template-js:1.0.0",
+  "version": "0.1.0",
+  "docker_image": "ghcr.io/guim31/gladys-astronomy:0.1.0",
   "gladys_version": ">=4.86.0",
-  "cover_image": "https://raw.githubusercontent.com/GladysAssistant/integration-template-js/master/cover.png",
-  "categories": ["lighting", "security", "environment"],
-  "transports": ["local", "cloud"],
+  "cover_image": "https://raw.githubusercontent.com/guim31/gladys-astronomy/main/cover.png",
+  "categories": ["environment", "services"],
+  "transports": ["cloud"],
+  "location": true,
   "config_schema": [
     {
       "key": "intro",
       "type": "section",
-      "label": { "en": "Getting started", "fr": "Pour commencer" },
+      "label": {
+        "en": "How it works",
+        "fr": "Fonctionnement"
+      },
       "description": {
-        "en": "The demo weather station reads real data from the free Open-Meteo API: pick the coordinates to observe. No account, no API key.",
-        "fr": "La station météo de démonstration lit de vraies données via l'API gratuite Open-Meteo : choisissez les coordonnées à observer. Pas de compte, pas de clé d'API."
+        "en": "Everything is computed locally from the coordinates of your Gladys house (Settings > Houses): eclipses, planets, meteor showers, twilights, seasons. The only outgoing connection is the NOAA space weather service for the aurora forecast, and it can be turned off. Times are shown in the Gladys timezone (Settings > System).",
+        "fr": "Tout est calculé localement à partir des coordonnées de votre maison Gladys (Paramètres > Maisons) : éclipses, planètes, étoiles filantes, crépuscules, saisons. La seule connexion sortante est le service de météo spatiale de la NOAA pour la prévision d'aurores, et elle peut être désactivée. Les heures sont affichées dans le fuseau horaire de Gladys (Paramètres > Système)."
       },
       "links": [
         {
-          "url": "https://open-meteo.com/en/docs",
-          "label": { "en": "Open-Meteo documentation", "fr": "Documentation Open-Meteo" }
+          "url": "https://www.swpc.noaa.gov/products/planetary-k-index",
+          "label": {
+            "en": "NOAA planetary K-index",
+            "fr": "Indice K planétaire NOAA"
+          }
         }
       ]
     },
     {
+      "key": "language",
+      "type": "select",
+      "display": "radio",
+      "label": {
+        "en": "Language of the texts",
+        "fr": "Langue des textes"
+      },
+      "description": {
+        "en": "Language of the sensor names and of the text values. Names are set when a device is created: to rename them after a change, delete and re-add the device.",
+        "fr": "Langue des noms de capteurs et des valeurs textuelles. Les noms sont fixés à la création d'un appareil : pour les renommer après un changement, supprimez puis rajoutez l'appareil."
+      },
+      "required": false,
+      "default": "fr",
+      "options": [
+        { "value": "fr", "label": { "en": "French", "fr": "Français" } },
+        { "value": "en", "label": { "en": "English", "fr": "Anglais" } }
+      ]
+    },
+    {
+      "key": "refresh_minutes",
+      "type": "number",
+      "label": {
+        "en": "Refresh of countdowns (min)",
+        "fr": "Rafraîchissement des comptes à rebours (min)"
+      },
+      "description": {
+        "en": "Minutes between two updates of the countdowns, flags and instantaneous sky quality. Rare events are recomputed daily at 03:00, the night every 30 minutes.",
+        "fr": "Minutes entre deux mises à jour des comptes à rebours, drapeaux et qualité instantanée du ciel. Les événements rares sont recalculés chaque jour à 03:00, la nuit toutes les 30 minutes."
+      },
+      "required": false,
+      "default": 5,
+      "min": 1,
+      "max": 30
+    },
+    {
+      "key": "conjunction_lookahead_days",
+      "type": "number",
+      "label": {
+        "en": "Conjunction search window (days)",
+        "fr": "Fenêtre de recherche des conjonctions (jours)"
+      },
+      "required": false,
+      "default": 90,
+      "min": 14,
+      "max": 180
+    },
+    {
+      "key": "conjunction_max_separation",
+      "type": "number",
+      "label": {
+        "en": "Conjunction: maximum separation (°)",
+        "fr": "Conjonction : séparation maximale (°)"
+      },
+      "description": {
+        "en": "Two bodies closer than this angle count as a conjunction. The full Moon is 0.5° wide.",
+        "fr": "Deux astres plus proches que cet angle forment une conjonction. La pleine Lune fait 0,5° de large."
+      },
+      "required": false,
+      "default": 3,
+      "min": 0.5,
+      "max": 10
+    },
+    {
+      "key": "meteor_min_zhr",
+      "type": "number",
+      "label": {
+        "en": "Meteor showers: minimum ZHR",
+        "fr": "Étoiles filantes : ZHR minimal"
+      },
+      "description": {
+        "en": "Showers with a lower hourly rate are ignored (10 keeps the Draconids, Leonids and Ursids; 50 keeps only the big three).",
+        "fr": "Les pluies à taux horaire inférieur sont ignorées (10 garde les Draconides, Léonides et Ursides ; 50 ne garde que les trois grandes)."
+      },
+      "required": false,
+      "default": 10,
+      "min": 0,
+      "max": 150
+    },
+    {
+      "key": "moon_max_illumination",
+      "type": "number",
+      "label": {
+        "en": "Moonless window: maximum illumination (%)",
+        "fr": "Fenêtre sans Lune : illumination maximale (%)"
+      },
+      "description": {
+        "en": "A Moon thinner than this does not spoil the dark window.",
+        "fr": "Une Lune plus fine que cela ne gâche pas la fenêtre de ciel noir."
+      },
+      "required": false,
+      "default": 30,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "key": "bortle",
+      "type": "number",
+      "label": {
+        "en": "Bortle class of your sky (0 = ignore)",
+        "fr": "Classe de Bortle de votre ciel (0 = ignorer)"
+      },
+      "description": {
+        "en": "Light pollution, 1 (pristine) to 9 (city center); lowers the sky quality score accordingly.",
+        "fr": "Pollution lumineuse, 1 (ciel pur) à 9 (centre-ville) ; abaisse d'autant le score de qualité du ciel."
+      },
+      "required": false,
+      "default": 0,
+      "min": 0,
+      "max": 9
+    },
+    {
+      "key": "aurora_enabled",
+      "type": "boolean",
+      "label": {
+        "en": "Aurora forecast (NOAA)",
+        "fr": "Prévision d'aurores (NOAA)"
+      },
+      "description": {
+        "en": "Publishes the Aurora device from the NOAA planetary Kp index, refreshed every 30 minutes. Turn off to keep the integration fully offline.",
+        "fr": "Publie l'appareil Aurores à partir de l'indice Kp planétaire de la NOAA, rafraîchi toutes les 30 minutes. Désactivez pour une intégration entièrement hors ligne."
+      },
+      "required": false,
+      "default": true
+    },
+    {
+      "key": "aurora_kp_alert",
+      "type": "number",
+      "label": {
+        "en": "Aurora alert from Kp",
+        "fr": "Alerte aurores à partir de Kp"
+      },
+      "description": {
+        "en": "Kp 5 is a minor storm (aurora possible around 55° of latitude), Kp 7 reaches central France.",
+        "fr": "Kp 5 est un orage mineur (aurores possibles vers 55° de latitude), Kp 7 atteint le centre de la France."
+      },
+      "required": false,
+      "default": 5,
+      "min": 3,
+      "max": 9
+    },
+    {
+      "key": "location_override",
+      "type": "section",
+      "label": {
+        "en": "Location override",
+        "fr": "Localisation manuelle"
+      },
+      "description": {
+        "en": "Leave empty to use the coordinates of the first located Gladys house. Fill both fields to observe from somewhere else.",
+        "fr": "Laissez vide pour utiliser les coordonnées de la première maison Gladys localisée. Remplissez les deux champs pour observer depuis un autre lieu."
+      }
+    },
+    {
       "key": "latitude",
       "type": "number",
-      "label": { "en": "Latitude", "fr": "Latitude" },
-      "description": {
-        "en": "Latitude used for the demo weather sensor.",
-        "fr": "Latitude utilisée par le capteur météo de démonstration."
+      "label": {
+        "en": "Latitude (°)",
+        "fr": "Latitude (°)"
       },
-      "required": true,
-      "default": 48.8566,
+      "required": false,
       "min": -90,
       "max": 90
     },
     {
       "key": "longitude",
       "type": "number",
-      "label": { "en": "Longitude", "fr": "Longitude" },
-      "description": {
-        "en": "Longitude used for the demo weather sensor.",
-        "fr": "Longitude utilisée par le capteur météo de démonstration."
+      "label": {
+        "en": "Longitude (°)",
+        "fr": "Longitude (°)"
       },
-      "required": true,
-      "default": 2.3522,
+      "required": false,
       "min": -180,
       "max": 180
     },
     {
-      "key": "unit",
-      "type": "select",
-      "label": { "en": "Temperature unit", "fr": "Unité de température" },
-      "required": false,
-      "default": "celsius",
-      "options": [
-        { "value": "celsius", "label": { "en": "Celsius", "fr": "Celsius" } },
-        { "value": "fahrenheit", "label": { "en": "Fahrenheit", "fr": "Fahrenheit" } }
-      ]
-    },
-    {
-      "key": "poll_frequency",
+      "key": "elevation",
       "type": "number",
-      "label": { "en": "Refresh interval (s)", "fr": "Intervalle de rafraîchissement (s)" },
-      "description": {
-        "en": "How often sensors are polled, in seconds.",
-        "fr": "Fréquence d'interrogation des capteurs, en secondes."
+      "label": {
+        "en": "Elevation (m)",
+        "fr": "Altitude (m)"
       },
       "required": false,
-      "default": 300,
-      "min": 30,
-      "max": 3600
+      "default": 0,
+      "min": 0,
+      "max": 5000
     }
   ],
   "actions": [
     {
-      "key": "test_weather",
-      "label": { "en": "Test the weather provider", "fr": "Tester le fournisseur météo" },
-      "timeout_seconds": 30
+      "key": "recompute_now",
+      "label": {
+        "en": "Recompute now",
+        "fr": "Recalculer maintenant"
+      },
+      "timeout_seconds": 60
     },
     {
-      "key": "identify",
-      "label": { "en": "Identify a device", "fr": "Identifier un appareil" },
-      "fields": [
-        {
-          "key": "device",
-          "type": "select",
-          "source": "devices",
-          "label": { "en": "Device", "fr": "Appareil" },
-          "required": true
-        }
-      ]
+      "key": "test_noaa",
+      "label": {
+        "en": "Test the NOAA service",
+        "fr": "Tester le service NOAA"
+      },
+      "timeout_seconds": 30
     }
   ]
 }
