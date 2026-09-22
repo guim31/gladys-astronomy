@@ -12,7 +12,7 @@ locally with
 [astronomy-engine](https://github.com/cosinekitty/astronomy) (MIT, pure
 JavaScript, no data download). No key, no account.
 
-![Cover](cover.png)
+![Cover](cover.jpg)
 
 ## Install
 
