@@ -15,7 +15,7 @@ import {
 
 export const PLATFORM_ID = 'home';
 
-const { TEXT, DURATION, LIGHT_SENSOR, COUNTER_SENSOR, ANGLE_SENSOR, DISTANCE_SENSOR, RISK } =
+const { TEXT, DURATION, LIGHT_SENSOR, COUNTER_SENSOR, ANGLE_SENSOR, DISTANCE_SENSOR, RISK, INPUT } =
   DEVICE_FEATURE_CATEGORIES;
 
 export const UNITS = DEVICE_FEATURE_UNITS;
@@ -38,9 +38,13 @@ function base(ids, key, name, category, type, extra = {}) {
   };
 }
 
-/** A free-text sensor (no history, never expires on the dashboard). */
+/**
+ * A free-text sensor (no history, never expires on the dashboard). `min` and
+ * `max` mean nothing for a text, but the core stores them in NOT NULL columns
+ * and refuses the device without them (HTTP 422): 0/0, as Zigbee2MQTT does.
+ */
 export function text(ids, key, name) {
-  return base(ids, key, name, TEXT, DEVICE_FEATURE_TYPES.TEXT.TEXT);
+  return base(ids, key, name, TEXT, DEVICE_FEATURE_TYPES.TEXT.TEXT, { min: 0, max: 0 });
 }
 
 /** A countdown or a duration. */
@@ -65,9 +69,14 @@ export function level(ids, key, name, { unit, min = 0, max = 100, history = true
   });
 }
 
-/** A 0/1 flag. */
+/**
+ * A 0/1 flag. `input/binary` is the neutral binary of the core: labelled in
+ * the UI ("État de l'entrée") and rendered as an On/Off badge. The first
+ * choice, `light-sensor/binary`, has no label in the Gladys front, which
+ * showed an empty chip in the Discovery screen.
+ */
 export function flag(ids, key, name, { history = false } = {}) {
-  return base(ids, key, name, LIGHT_SENSOR, DEVICE_FEATURE_TYPES.SENSOR.BINARY, {
+  return base(ids, key, name, INPUT, DEVICE_FEATURE_TYPES.INPUT.BINARY, {
     min: 0,
     max: 1,
     keep_history: history,

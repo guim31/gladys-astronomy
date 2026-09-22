@@ -73,9 +73,20 @@ test('every feature is a read-only sensor with a legitimate category/type/unit',
       if (f.unit !== undefined) {
         assert.ok(UNITS.has(f.unit), `${f.external_id}: ${f.unit}`);
       }
-      if (f.type !== 'text') {
+      // NOT NULL columns of t_device_feature: a missing one is an HTTP 422.
+      for (const column of ['min', 'max']) {
+        assert.ok(Number.isFinite(f[column]), `${f.external_id}: ${column} is required`);
+      }
+      for (const column of ['read_only', 'has_feedback', 'keep_history']) {
+        assert.equal(typeof f[column], 'boolean', `${f.external_id}: ${column}`);
+      }
+      if (f.type === 'text') {
+        assert.deepEqual([f.min, f.max], [0, 0]);
+      } else {
         assert.ok(f.min < f.max, `${f.external_id}: min/max`);
       }
+      // Pairs the Gladys front cannot name show an empty chip (light-sensor/binary did).
+      assert.notDeepEqual([f.category, f.type], ['light-sensor', 'binary'], f.external_id);
       assert.ok(f.name.length > 0 && f.name.length <= 40, f.name);
     }
   }
