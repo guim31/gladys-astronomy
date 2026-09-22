@@ -1,0 +1,132 @@
+[
+  {
+    "code": "QUA",
+    "name": { "en": "Quadrantids", "fr": "Quadrantides" },
+    "solarLongitude": 283.16,
+    "zhr": 80,
+    "activity": { "start": "12-28", "end": "01-12" },
+    "radiant": { "raHours": 15.3, "decDeg": 49 },
+    "velocityKms": 41,
+    "parent": "(196256) 2003 EH1"
+  },
+  {
+    "code": "LYR",
+    "name": { "en": "Lyrids", "fr": "Lyrides" },
+    "solarLongitude": 32.32,
+    "zhr": 18,
+    "activity": { "start": "04-14", "end": "04-30" },
+    "radiant": { "raHours": 18.1, "decDeg": 34 },
+    "velocityKms": 49,
+    "parent": "C/1861 G1 Thatcher"
+  },
+  {
+    "code": "ETA",
+    "name": { "en": "Eta Aquariids", "fr": "Êta Aquarides" },
+    "solarLongitude": 45.5,
+    "zhr": 50,
+    "activity": { "start": "04-19", "end": "05-28" },
+    "radiant": { "raHours": 22.5, "decDeg": -1 },
+    "velocityKms": 66,
+    "parent": "1P/Halley"
+  },
+  {
+    "code": "SDA",
+    "name": { "en": "Southern Delta Aquariids", "fr": "Delta Aquarides Sud" },
+    "solarLongitude": 126,
+    "zhr": 25,
+    "activity": { "start": "07-12", "end": "08-23" },
+    "radiant": { "raHours": 22.7, "decDeg": -16 },
+    "velocityKms": 41,
+    "parent": "96P/Machholz"
+  },
+  {
+    "code": "CAP",
+    "name": { "en": "Alpha Capricornids", "fr": "Alpha Capricornides" },
+    "solarLongitude": 127,
+    "zhr": 5,
+    "activity": { "start": "07-03", "end": "08-15" },
+    "radiant": { "raHours": 20.5, "decDeg": -10 },
+    "velocityKms": 23,
+    "parent": "169P/NEAT"
+  },
+  {
+    "code": "PER",
+    "name": { "en": "Perseids", "fr": "Perséides" },
+    "solarLongitude": 140.0,
+    "zhr": 100,
+    "activity": { "start": "07-17", "end": "08-24" },
+    "radiant": { "raHours": 3.2, "decDeg": 58 },
+    "velocityKms": 59,
+    "parent": "109P/Swift-Tuttle"
+  },
+  {
+    "code": "DRA",
+    "name": { "en": "Draconids", "fr": "Draconides" },
+    "solarLongitude": 195.4,
+    "zhr": 10,
+    "activity": { "start": "10-06", "end": "10-10" },
+    "radiant": { "raHours": 17.5, "decDeg": 54 },
+    "velocityKms": 20,
+    "parent": "21P/Giacobini-Zinner"
+  },
+  {
+    "code": "ORI",
+    "name": { "en": "Orionids", "fr": "Orionides" },
+    "solarLongitude": 208,
+    "zhr": 20,
+    "activity": { "start": "10-02", "end": "11-07" },
+    "radiant": { "raHours": 6.3, "decDeg": 16 },
+    "velocityKms": 66,
+    "parent": "1P/Halley"
+  },
+  {
+    "code": "STA",
+    "name": { "en": "Southern Taurids", "fr": "Taurides Sud" },
+    "solarLongitude": 223,
+    "zhr": 5,
+    "activity": { "start": "09-10", "end": "11-20" },
+    "radiant": { "raHours": 3.5, "decDeg": 15 },
+    "velocityKms": 27,
+    "parent": "2P/Encke"
+  },
+  {
+    "code": "NTA",
+    "name": { "en": "Northern Taurids", "fr": "Taurides Nord" },
+    "solarLongitude": 230,
+    "zhr": 5,
+    "activity": { "start": "10-20", "end": "12-10" },
+    "radiant": { "raHours": 3.9, "decDeg": 22 },
+    "velocityKms": 29,
+    "parent": "2P/Encke"
+  },
+  {
+    "code": "LEO",
+    "name": { "en": "Leonids", "fr": "Léonides" },
+    "solarLongitude": 235.27,
+    "zhr": 10,
+    "activity": { "start": "11-06", "end": "11-30" },
+    "radiant": { "raHours": 10.1, "decDeg": 22 },
+    "velocityKms": 71,
+    "parent": "55P/Tempel-Tuttle"
+  },
+  {
+    "code": "GEM",
+    "name": { "en": "Geminids", "fr": "Géminides" },
+    "solarLongitude": 262.2,
+    "zhr": 150,
+    "activity": { "start": "12-04", "end": "12-17" },
+    "radiant": { "raHours": 7.5, "decDeg": 33 },
+    "velocityKms": 35,
+    "parent": "(3200) Phaethon"
+  },
+  {
+    "code": "URS",
+    "name": { "en": "Ursids", "fr": "Ursides" },
+    "solarLongitude": 270.7,
+    "zhr": 10,
+    "activity": { "start": "12-17", "end": "12-26" },
+    "radiant": { "raHours": 14.5, "decDeg": 76 },
+    "velocityKms": 33,
+    "parent": "8P/Tuttle"
+  }
+]
