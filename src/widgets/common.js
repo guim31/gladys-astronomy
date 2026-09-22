@@ -1,6 +1,7 @@
 // Shared helpers of the widget builders.
 import { createFormatter } from '../formatters.js';
 import { strings } from './i18n.js';
+import { localMidnight } from '../time.js';
 
 const DAY_MS = 24 * 3600 * 1000;
 
@@ -19,17 +20,22 @@ export function message(text, ttlSeconds = 300) {
   };
 }
 
+/**
+ * Whole calendar days between today and the local day of `time` (0 = today,
+ * 1 = tomorrow), whatever the hour: an event at 02:05 tomorrow is "tomorrow",
+ * not "today" because it is less than 24 h away.
+ */
+export function calendarDays(time, now) {
+  return Math.max(0, Math.round((localMidnight(time) - localMidnight(now)) / DAY_MS));
+}
+
 /** Color of an "in N days" badge. */
 export function urgency(time, now) {
-  const days = (time - now) / DAY_MS;
+  const days = calendarDays(time, now);
   if (days <= 1) {
     return 'danger';
   }
   return days <= 7 ? 'warning' : 'info';
-}
-
-export function daysBetween(time, now) {
-  return Math.max(0, (time - now) / DAY_MS);
 }
 
 export function iso(date) {

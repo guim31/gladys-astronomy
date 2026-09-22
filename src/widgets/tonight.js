@@ -54,11 +54,10 @@ export function build(snapshot, { language }) {
     },
   ];
 
+  // Two markers only: dusk, dawn and "now" crowd the labels on a phone.
   const annotations = [
-    [twilights.civil.dusk, s.civilDusk, 'neutral'],
-    [twilights.astronomical.dusk, s.astroDusk, 'primary'],
+    [twilights.astronomical.dusk ?? twilights.nautical.dusk, s.astroDusk, 'primary'],
     [moonless?.start, s.moonlessStart, 'success'],
-    [twilights.astronomical.dawn, s.astroDawn, 'neutral'],
   ]
     .filter(([t]) => t)
     .map(([t, label, color]) => ({ t: iso(t), label, color }));

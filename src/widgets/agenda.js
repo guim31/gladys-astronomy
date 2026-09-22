@@ -1,6 +1,6 @@
 // Widget "Sky agenda": the next events of every kind, as a list of cards.
 import { buildAgenda, CATEGORIES } from '../agenda.js';
-import { localize, message, urgency, daysBetween, iso } from './common.js';
+import { localize, message, urgency, calendarDays, iso } from './common.js';
 
 export const KEY = 'astro_agenda';
 
@@ -40,7 +40,7 @@ export function build(snapshot, { settings = {}, language, now }) {
           title: e.title,
           subtitle: e.subtitle,
           date: iso(e.time),
-          badge: { text: s.inDays(daysBetween(e.time, now)), color: urgency(e.time, now) },
+          badge: { text: s.inDays(calendarDays(e.time, now)), color: urgency(e.time, now) },
           description: e.details,
         })),
       },

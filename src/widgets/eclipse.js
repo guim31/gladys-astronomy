@@ -1,5 +1,5 @@
 // Widget "Next eclipse": countdown and phases of the next visible eclipse.
-import { localize, message, daysBetween } from './common.js';
+import { localize, message, calendarDays } from './common.js';
 
 export const KEY = 'astro_eclipse';
 
@@ -72,7 +72,7 @@ export function build(snapshot, { settings = {}, language, now }) {
   }
   const title =
     e.body === 'sun' ? s.solarEclipse(fmt.t.kind[e.kind]) : s.lunarEclipse(fmt.t.kind[e.kind]);
-  const days = daysBetween(e.start, now);
+  const days = calendarDays(e.start, now);
   const items = [{ label: s.date, value: fmt.date(e.peak), icon: 'calendar', color: 'primary' }];
   for (const [key, when] of e.phases) {
     if (!when) {
@@ -90,8 +90,8 @@ export function build(snapshot, { settings = {}, language, now }) {
       { type: 'text', variant: 'heading', text: title },
       {
         type: 'value',
-        value: days < 1 ? s.inDays(days) : Math.floor(days),
-        unit: days < 1 ? undefined : s.daysUnit,
+        value: days < 2 ? s.inDays(days) : days,
+        unit: days < 2 ? undefined : s.daysUnit,
         label: s.eclipseIn,
         icon: 'clock',
         color: days <= 7 ? 'warning' : 'primary',

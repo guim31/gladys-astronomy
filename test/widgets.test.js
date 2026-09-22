@@ -43,7 +43,7 @@ test('tonight: gauge, five tiles, a score curve with dusk/dawn markers, the plan
   assert.ok(chart.series[0].points.length > 40);
   assert.deepEqual(
     chart.annotations.map((a) => a.label),
-    ['Crépuscule', 'Nuit noire', 'Sans Lune', 'Aube'],
+    ['Nuit noire', 'Sans Lune'],
   );
   assert.equal(chart.now_marker, true);
   const status = content.components.find((c) => c.type === 'status');
@@ -61,7 +61,8 @@ test('agenda: chronological cards, badges by urgency, category and period settin
   const list = content.components.find((c) => c.type === 'card-list');
   assert.equal(list.items.length, 8);
   assert.equal(list.items[0].title, 'Équinoxe d’automne');
-  assert.equal(list.items[0].badge.text, 'J-2');
+  // 20/09 at noon -> equinox on 23/09 at 02:05 local: three calendar days.
+  assert.equal(list.items[0].badge.text, 'J-3');
   assert.equal(list.items[0].badge.color, 'warning');
   const dates = list.items.map((i) => Date.parse(i.date));
   assert.deepEqual(
@@ -138,6 +139,15 @@ test('aurora: tiles colored by Kp, a bar chart, the alert annotation; disabled a
     config: down.config,
   });
   assert.match(unavailable.components[0].text, /NOAA does not answer/);
+});
+
+test('badges count calendar days: an event at 02:05 tomorrow is "Demain", not "Aujourd’hui"', async () => {
+  const { snapshot, config } = await computedSnapshot('2026-09-22T20:30:00Z');
+  const now = new Date('2026-09-22T20:30:00Z'); // 22:30 in Paris, equinox at 02:05
+  const content = WIDGETS.astro_agenda(snapshot, { settings: {}, language: 'fr', now, config });
+  const first = content.components.find((c) => c.type === 'card-list').items[0];
+  assert.equal(first.title, 'Équinoxe d’automne');
+  assert.deepEqual(first.badge, { text: 'Demain', color: 'danger' });
 });
 
 test('refresh map only names declared widgets', () => {
