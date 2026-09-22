@@ -6,11 +6,18 @@ dark-sky window, the seasons and an aurora outlook. Everything is computed
 **locally**, without any key or account: the only outgoing connection is the
 NOAA space weather service for the aurora Kp index, and it can be turned off.
 
-Six devices appear in Gladys, each with text sensors (readable on the
-dashboard) and numeric sensors (usable in scenes, with thresholds and history).
+The integration brings three things:
+
+- **six devices** with text and numeric sensors, kept in history and usable in scenes
+  with thresholds;
+- **four dashboard widgets**, shown in the language of each user;
+- **six scene triggers and two scene actions**: "an eclipse begins", "the dark sky
+  begins", "what is the next event?"…
 
 ## Requirements
 
+- **Gladys 5.1 or later**: widgets and scenes from external integrations appeared in
+  that version.
 - **A located house in Gladys**: Settings → Houses → your house → drop the pin
   on the map. The integration reads those coordinates (it asks for the
   `location` access at install time). You can also type a latitude and a
@@ -31,6 +38,44 @@ dashboard) and numeric sensors (usable in scenes, with thresholds and history).
 
 The "kind" sensors (`partial`, `total`, `september-equinox`…) carry neutral
 values, identical in every language, to be tested in scenes.
+
+## Dashboard widgets
+
+When editing a dashboard, pick **Add a box → Integration widgets**.
+
+| Widget            | What it shows                                                                                                                                                                                        | Settings                                            |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------- |
+| **Tonight's sky** | Sky quality curve over the whole night, with dusk, dark sky, moonless start and dawn markers; gauge of the sky now; time and length of the moonless window; Moon; visible planets and active shower. | none                                                |
+| **Sky agenda**    | The next eight events, each with an "In 12 d" badge and a detail panel: eclipses, meteor peaks, conjunctions, oppositions, elongations, seasons, transits.                                           | kinds of events, period (30 days, 3 months, 1 year) |
+| **Aurora**        | Kp now, 24 h and 72 h maxima colored by the threshold, observed and forecast bars, alert level and freshness of the NOAA data.                                                                       | none                                                |
+| **Next eclipse**  | Countdown, obscuration, altitude at maximum, time of each phase.                                                                                                                                     | the next one, solar or lunar                        |
+
+Conjunctions are searched over the window set in the configuration (90 days by
+default): with the "1 year" period, the agenda shows none beyond it.
+
+## Scene triggers and actions
+
+In the scene editor, category **Integrations**:
+
+| Trigger                     | When                                               | Possible filter                   |
+| --------------------------- | -------------------------------------------------- | --------------------------------- |
+| Eclipse begins or peaks     | at the start of the visible phase, then at maximum | Sun or Moon, beginning or maximum |
+| Moonless dark sky begins    | when the moonless window starts                    | —                                 |
+| Meteor shower peak tonight  | at dusk on the night of a peak                     | the shower (Perseids, Geminids…)  |
+| Visible conjunction tonight | at dusk on the night of an observable approach     | with or without the Moon          |
+| Aurora alert rises          | when the alert level goes up                       | the level reached                 |
+| Season begins               | at the instant of the equinox or solstice          | the season                        |
+
+Each trigger passes its details to the following actions (maximum time, ZHR,
+separation, Kp, a ready-to-send description…), inserted with the variable picker.
+
+Two actions return values to the next steps: **Next sky event** (filterable by kind)
+and **Tonight's sky summary**. They have their own language field, since a scene has
+no user.
+
+Timed triggers are emitted by the integration container: if it is stopped at the
+time, an event missed by less than 15 minutes is caught up on restart, older ones are
+dropped.
 
 ## Configuration
 
@@ -54,15 +99,17 @@ values, identical in every language, to be tested in scenes.
 
 ## Scene ideas
 
-- **Go out and watch**: when "Dark sky now" becomes 1 and "Shower in progress"
-  is 1, send a message with the "Active shower" text.
-- **Never miss the eclipse**: if "Solar eclipse in" drops below 1 day, send the
-  "Next solar eclipse" text every morning.
-- **Aurora alert**: when "Aurora alert" becomes 1, or "Kp max next 24 h" exceeds
-  6, notify and switch the outdoor lights off.
-- **Garden lighting**: switch the garden lights off during the moonless window
-  when the best score of the night is above 8.
-- **Seasons**: when "Next season in" reaches 0, announce the equinox.
+- **Perseids night**: trigger "Meteor shower peak tonight" filtered on the Perseids,
+  then a message with the description it passes on.
+- **Never miss the eclipse**: trigger "Eclipse begins or peaks", moment "Beginning":
+  notify everyone and open the shutters facing the sky.
+- **Dark sky**: trigger "Moonless dark sky begins": switch the garden lights off when
+  the best score passed on is above 8.
+- **Aurora alert**: trigger "Aurora alert rises", level "Strong storm". For a precise
+  threshold (Kp > 6), use the "Kp max next 24 h" sensor of the Aurora device in a
+  device state trigger instead.
+- **Astronomical good evening**: every evening at 8 pm, action "Tonight's sky summary"
+  then a message with the summary.
 
 ## Good to know
 

@@ -7,12 +7,18 @@ d'aurores. Tout est calculé **localement**, sans clé ni compte : la seule
 connexion sortante est le service de météo spatiale de la NOAA pour l'indice
 Kp des aurores, et elle peut être désactivée.
 
-Six appareils apparaissent dans Gladys, chacun avec des capteurs texte (lisibles
-sur le tableau de bord) et des capteurs numériques (utilisables dans les scènes,
-avec seuils et historique).
+L'intégration apporte trois choses :
+
+- **six appareils** avec des capteurs texte et numériques, historisés et utilisables
+  dans les scènes avec des seuils ;
+- **quatre widgets** de tableau de bord, affichés dans la langue de chaque utilisateur ;
+- **six déclencheurs et deux actions de scène** : « une éclipse commence », « le ciel
+  noir commence », « quel est le prochain événement ? »…
 
 ## Prérequis
 
+- **Gladys 5.1 ou plus récent** : les widgets et les scènes d'intégrations externes
+  sont apparus dans cette version.
 - **Une maison localisée dans Gladys** : Paramètres → Maisons → votre maison →
   placez le repère sur la carte. L'intégration lit ces coordonnées (elle demande
   l'accès `location` à l'installation). Vous pouvez aussi saisir latitude et
@@ -34,6 +40,46 @@ avec seuils et historique).
 Les capteurs « type » (`partial`, `total`, `september-equinox`…) portent des
 valeurs neutres, identiques dans toutes les langues, pour être testées dans les
 scènes.
+
+## Widgets du tableau de bord
+
+Dans l'édition d'un tableau de bord, choisissez **Ajouter une box → Widgets
+d'intégrations**.
+
+| Widget                | Ce qu'il montre                                                                                                                                                                                                              | Réglages                                             |
+| --------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| **Cette nuit**        | Courbe de la qualité du ciel sur toute la nuit, avec crépuscule, nuit noire, début du ciel sans Lune et aube ; jauge du ciel maintenant ; heure et durée de la fenêtre sans Lune ; Lune ; planètes visibles et pluie active. | aucun                                                |
+| **Agenda du ciel**    | Les huit prochains événements, chacun avec un badge « J-12 » et un panneau de détail : éclipses, pics d'étoiles filantes, conjonctions, oppositions, élongations, saisons, transits.                                         | types d'événements, période (30 jours, 3 mois, 1 an) |
+| **Aurores**           | Kp actuel, max 24 h et 72 h colorés selon le seuil, histogramme observé et prévu, niveau d'alerte et fraîcheur des données NOAA.                                                                                             | aucun                                                |
+| **Prochaine éclipse** | Compte à rebours, obscuration, hauteur de l'astre au maximum, heure de chaque phase.                                                                                                                                         | la prochaine, solaire ou lunaire                     |
+
+Les conjonctions sont cherchées sur la fenêtre choisie dans la configuration (90 jours
+par défaut) : sur la période « 1 an », l'agenda n'en montre pas au-delà.
+
+## Déclencheurs et actions de scène
+
+Dans l'éditeur de scène, catégorie **Intégrations** :
+
+| Déclencheur                    | Quand                                                  | Filtre possible                  |
+| ------------------------------ | ------------------------------------------------------ | -------------------------------- |
+| Début ou maximum d'éclipse     | au début de la phase visible, puis au maximum          | Soleil ou Lune, début ou maximum |
+| Début du ciel noir sans Lune   | quand la fenêtre sans Lune commence                    | —                                |
+| Pic d'étoiles filantes ce soir | au crépuscule de la nuit d'un pic                      | la pluie (Perséides, Géminides…) |
+| Conjonction visible ce soir    | au crépuscule de la nuit d'un rapprochement observable | avec ou sans la Lune             |
+| Alerte aurores en hausse       | quand le niveau d'alerte monte                         | le niveau atteint                |
+| Début d'une saison             | à l'instant de l'équinoxe ou du solstice               | la saison                        |
+
+Chaque déclencheur transmet ses informations aux actions suivantes (heure du maximum,
+ZHR, séparation, Kp, description prête à envoyer…), à insérer avec le sélecteur de
+variables.
+
+Deux actions renvoient des valeurs aux étapes suivantes : **Prochain événement du
+ciel** (filtrable par type) et **Résumé du ciel de cette nuit**. Elles ont leur propre
+champ de langue, car une scène n'a pas d'utilisateur.
+
+Les déclencheurs horaires sont émis par le conteneur de l'intégration : s'il est
+arrêté à l'heure dite, un événement manqué de moins de 15 minutes est rattrapé à son
+redémarrage, au-delà il est abandonné.
 
 ## Configuration
 
@@ -58,15 +104,17 @@ scènes.
 
 ## Idées de scènes
 
-- **Sortir observer** : quand « Ciel noir maintenant » passe à 1 et que « Pluie
-  en cours » vaut 1, envoyer un message avec le texte « Pluie active ».
-- **Ne pas rater l'éclipse** : si « Éclipse solaire dans » descend sous 1 jour,
-  envoyer le texte « Prochaine éclipse solaire » chaque matin.
-- **Alerte aurores** : quand « Alerte aurores » passe à 1, ou que « Kp max sur
-  24 h » dépasse 6, prévenir et éteindre les lumières extérieures.
-- **Éclairage extérieur** : couper les lumières du jardin pendant la fenêtre sans
-  Lune quand le score de la nuit dépasse 8.
-- **Saisons** : quand « Prochaine saison dans » vaut 0, annoncer l'équinoxe.
+- **Nuit des Perséides** : déclencheur « Pic d'étoiles filantes ce soir » filtré sur
+  les Perséides, puis un message contenant la description transmise.
+- **Ne pas rater l'éclipse** : déclencheur « Début ou maximum d'éclipse », phase
+  « Début » : prévenir tout le monde et ouvrir les volets côté ciel.
+- **Ciel noir** : déclencheur « Début du ciel noir sans Lune » : couper l'éclairage du
+  jardin si le meilleur score transmis dépasse 8.
+- **Alerte aurores** : déclencheur « Alerte aurores en hausse », niveau « Orage fort ».
+  Pour un seuil précis (Kp > 6), utilisez plutôt le capteur « Kp max sur 24 h » de
+  l'appareil Aurores dans un déclencheur d'état d'appareil.
+- **Bonsoir astronomique** : chaque soir à 20 h, action « Résumé du ciel de cette
+  nuit » puis un message avec le résumé.
 
 ## À savoir
 

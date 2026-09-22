@@ -15,10 +15,10 @@ import { createLogger } from '@gladysassistant/integration-sdk';
 import { makeObserver, DAY_MS } from './astro/observer.js';
 import { nextSolarEclipse, nextLunarEclipse, nextTransit } from './astro/eclipses.js';
 import { nextSeason, dayLength, nextApsis, sunDistanceKm } from './astro/seasons.js';
-import { describeNight, skyScore, moonIllumination } from './astro/night.js';
+import { describeNight, skyScore, moonIllumination, eveningNear } from './astro/night.js';
 import { planetsInWindow, upcomingPlanetEvents } from './astro/planets.js';
 import { upcomingConjunctions } from './astro/conjunctions.js';
-import { activeShowers, nextPeak, moonAtPeak, radiantAltitude } from './astro/meteors.js';
+import { activeShowers, upcomingPeaks, moonAtPeak, radiantAltitude } from './astro/meteors.js';
 import { fetchKp, summarize } from './aurora/noaa.js';
 import { localMidnight, localDayKey } from './time.js';
 
@@ -59,6 +59,7 @@ export function createEngine({ config, location, dataDir, now = () => new Date()
       ...shower,
       moon: moonAtPeak(shower.peak, observer),
       radiantAltitude: radiantAltitude(shower, shower.peak, observer),
+      evening: eveningNear(shower.peak, observer)?.evening ?? null,
     };
   }
 
@@ -74,7 +75,7 @@ export function createEngine({ config, location, dataDir, now = () => new Date()
       conjunctions: upcomingConjunctions(at, observer, {
         lookaheadDays: config.conjunction_lookahead_days,
         maxSeparation: config.conjunction_max_separation,
-      }),
+      }).map((c) => ({ ...c, evening: eveningNear(c.time, observer)?.evening ?? null })),
     };
     snapshot.computedAt.rare = at;
     return snapshot.rare;
@@ -93,13 +94,16 @@ export function createEngine({ config, location, dataDir, now = () => new Date()
         }
       : null;
     const showers = activeShowers(at, { minZhr: config.meteor_min_zhr }).map(decorateShower);
-    const peak = nextPeak(at, { minZhr: config.meteor_min_zhr });
-    const upcoming = peak ? decorateShower(peak) : null;
+    const peaks = upcomingPeaks(at, { minZhr: config.meteor_min_zhr, count: 4 }).map(
+      decorateShower,
+    );
+    const upcoming = peaks[0] ?? null;
     snapshot.night = {
       ...night,
       planets: window ? planetsInWindow(window, observer) : [],
       activeShowers: showers,
       nextPeak: upcoming,
+      upcomingPeaks: peaks,
       peakTonight: Boolean(
         upcoming &&
         night.night &&
@@ -206,6 +210,7 @@ export function createEngine({ config, location, dataDir, now = () => new Date()
     }
     snapshot.aurora = {
       summary: rows ? summarize(rows, at, { alertKp: config.aurora_kp_alert }) : null,
+      rows: rows ?? [],
       fetchedAt,
       source,
       error,
@@ -215,8 +220,7 @@ export function createEngine({ config, location, dataDir, now = () => new Date()
   }
 
   /**
-   * Re-derive the aurora digest from the rows already fetched (cheap, for the
-   * live tick), without touching the network.
+   * Every scope at once (manifest action, tests).
    */
   async function computeAll() {
     computeRare();

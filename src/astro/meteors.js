@@ -98,6 +98,16 @@ export function nextPeak(now, { minZhr = 0 } = {}) {
 }
 
 /**
+ * The next `count` shower peaks after `now` (above `minZhr`), chronological.
+ */
+export function upcomingPeaks(now, { minZhr = 0, count = 4 } = {}) {
+  const year = now.getUTCFullYear();
+  return [...showersOfYear(year), ...showersOfYear(year + 1)]
+    .filter((s) => s.peak > now && s.zhr >= minZhr)
+    .slice(0, count);
+}
+
+/**
  * Lunar interference on the night of a peak: illumination and whether the
  * Moon is up at all during that night.
  * @returns {{ illumination: number, moonUp: boolean, level: 'none'|'low'|'medium'|'high' }}

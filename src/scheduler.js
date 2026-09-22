@@ -9,6 +9,9 @@
 //   - live   : every `refresh_minutes` (countdowns, flags, instantaneous score)
 //   - aurora : every 30 min (NOAA fetch), when enabled
 //
+// After each scope, the scene-event timers are re-planned (`events`, see
+// scene-events.js) and the dashboard widgets fed by that scope are nudged.
+//
 // Failure policy: the computations are local and cannot fail on the network;
 // an exception there is a bug, logged and retried at the next tick. The NOAA
 // fetch degrades the aurora device (cache, then "unavailable") and never
@@ -25,6 +28,8 @@ import {
 } from './devices/index.js';
 import { createFormatter } from './formatters.js';
 import { nextLocalTime } from './time.js';
+import { planEvents } from './scene-events.js';
+import { REFRESH_AFTER } from './widgets/index.js';
 
 const logger = createLogger({ name: 'scheduler' });
 
@@ -45,10 +50,18 @@ export const MESSAGES = {
 
 /**
  * Publish the devices, compute everything once, start the timers.
+ * @param {object} options
+ * @param {object} [options.events] scene-event scheduler (createEventScheduler)
  * @returns {Promise<{ stop: () => void, poll: (device: object) => Promise<void>,
  *   recompute: () => Promise<void> }>}
  */
-export async function startScheduler({ gladys, config, engine, now = () => new Date() }) {
+export async function startScheduler({
+  gladys,
+  config,
+  engine,
+  events = null,
+  now = () => new Date(),
+}) {
   const fmt = createFormatter(config.language);
   await gladys.publishDiscoveredDevices(buildDiscoveredDevices(gladys, config));
 
@@ -59,6 +72,7 @@ export async function startScheduler({ gladys, config, engine, now = () => new D
 
   function stop() {
     stopped = true;
+    events?.stop();
     for (const timer of timers) {
       clearInterval(timer);
       clearTimeout(timer);
@@ -104,11 +118,28 @@ export async function startScheduler({ gladys, config, engine, now = () => new D
 
   const snapshot = () => engine.getSnapshot();
 
+  /** Ask Gladys to re-pull the widgets fed by a scope (rate-limited core-side). */
+  function nudge(scope) {
+    for (const key of REFRESH_AFTER[scope] ?? []) {
+      try {
+        gladys.requestWidgetRefresh?.(key);
+      } catch (err) {
+        logger.warn(`requestWidgetRefresh ${key}: ${err.message}`);
+      }
+    }
+  }
+
+  async function replanEvents() {
+    await events?.replan(planEvents(snapshot(), { fmt }));
+  }
+
   async function rareTick({ force = false } = {}) {
     await guarded('rare', async () => {
       engine.computeRare();
       engine.computeLive();
       await publish(statesFor(gladys, snapshot(), config, fmt, SCOPES.rare), { force });
+      await replanEvents();
+      nudge('rare');
     });
   }
 
@@ -117,6 +148,8 @@ export async function startScheduler({ gladys, config, engine, now = () => new D
       engine.computeNight();
       engine.computeLive();
       await publish(statesFor(gladys, snapshot(), config, fmt, SCOPES.night), { force });
+      await replanEvents();
+      nudge('night');
     });
   }
 
@@ -135,6 +168,8 @@ export async function startScheduler({ gladys, config, engine, now = () => new D
       await engine.refreshAurora();
       await publish(statesFor(gladys, snapshot(), config, fmt, SCOPES.aurora), { force });
       await gladys.publishTransports([aurora.transport(gladys, snapshot())]);
+      await events?.onAuroraSummary(snapshot().aurora?.summary, fmt);
+      nudge('aurora');
     });
   }
 

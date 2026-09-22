@@ -6,7 +6,9 @@ up tonight and their conjunctions, the **meteor showers**, the moonless
 **observing window** with a sky quality score, the **seasons** and Earth's
 orbit, and an **aurora** outlook from the NOAA planetary Kp index.
 
-Everything but the aurora is computed locally with
+Six devices (history, thresholds in scenes), four dashboard widgets and six scene
+triggers plus two scene actions (Gladys 5.1). Everything but the aurora is computed
+locally with
 [astronomy-engine](https://github.com/cosinekitty/astronomy) (MIT, pure
 JavaScript, no data download). No key, no account.
 
@@ -39,9 +41,17 @@ configuration. The user documentation lives in [docs/en.md](docs/en.md) /
   NOAA every 30 min. Devices are published with `should_poll: false`; an
   `onPoll` fallback still answers if a user enables Gladys polling.
 
-The snapshot is designed to feed dashboard widgets and scene triggers once the
-Gladys core ships them for external integrations (PR #3109 / #3110): no new
-computation will be needed, only the declarations.
+- `src/widgets/*` — pure builders from the snapshot to the core's widget
+  vocabulary, in the language of the viewing user; `src/agenda.js` merges every
+  upcoming event for the agenda widget and the `next_event` action. The tests run
+  every content through the SDK's `validateWidgetContent`.
+- `src/scene-events.js` — `planEvents` (pure) lists the timed triggers with stable
+  ids; the event scheduler arms timers for the next 24 h, publishes with
+  `publishSceneEvent` and remembers what it sent in `/data/fired-events.json`
+  (no replay after a restart, 15 min catch-up). `aurora_alert` fires on a rising
+  alert level only. `src/scene-actions.js` answers the two scene actions.
+- Widget, trigger and action keys are part of the users' dashboards and scenes:
+  never rename or remove one after a release.
 
 ## Development
 

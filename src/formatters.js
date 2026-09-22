@@ -121,9 +121,21 @@ const T = {
   },
 };
 
-export function createFormatter(language = 'fr', timeZone = process.env.TZ || 'UTC') {
-  const t = T[language] ?? T.fr;
-  const locale = LOCALES[language] ?? LOCALES.fr;
+/**
+ * @param {string} language requested language (ISO 639-1)
+ * @param {string} timeZone IANA zone, the container's TZ by default
+ * @param {{ fallback?: 'fr'|'en' }} options language used when `language` is
+ *   not supported: French for the device texts (the config default), English
+ *   for the widgets (Gladys' own fallback for a user language).
+ */
+export function createFormatter(
+  language = 'fr',
+  timeZone = process.env.TZ || 'UTC',
+  { fallback = 'fr' } = {},
+) {
+  const lang = T[language] ? language : fallback;
+  const t = T[lang];
+  const locale = LOCALES[lang];
   const dateFmt = new Intl.DateTimeFormat(locale, {
     timeZone,
     day: '2-digit',
@@ -153,6 +165,7 @@ export function createFormatter(language = 'fr', timeZone = process.env.TZ || 'U
 
   return {
     t,
+    language: lang,
     date,
     time,
     dateTime,
@@ -223,7 +236,7 @@ export function createFormatter(language = 'fr', timeZone = process.env.TZ || 'U
     },
 
     showerName(s) {
-      return s.name[language] ?? s.name.en;
+      return s.name[lang] ?? s.name.en;
     },
 
     activeShower(s) {

@@ -12,6 +12,7 @@ import {
   sampleTimes,
   clamp,
   round,
+  HOUR_MS,
 } from './observer.js';
 
 export const TWILIGHTS = [
@@ -116,6 +117,27 @@ export function skyScore(date, observer, { bortle = 0 } = {}) {
 }
 
 /**
+ * The night nearest to `time` (the one containing it, else the closest one)
+ * and its civil dusk: the moment an evening event is worth announcing.
+ * @returns {{ night: { start: Date, end: Date }, evening: Date } | null}
+ */
+export function eveningNear(time, observer) {
+  const candidates = [
+    nightAround(time, observer),
+    nightAround(new Date(time.getTime() - 12 * HOUR_MS), observer),
+  ].filter(Boolean);
+  if (candidates.length === 0) {
+    return null;
+  }
+  const middle = (n) => (n.start.getTime() + n.end.getTime()) / 2;
+  const night =
+    candidates.find((n) => time >= n.start && time <= n.end) ??
+    candidates.sort((a, b) => Math.abs(middle(a) - time) - Math.abs(middle(b) - time))[0];
+  const tw = twilights(night, observer);
+  return { night, evening: tw.civil.dusk ?? night.start };
+}
+
+/**
  * Everything about the night around `now`.
  */
 export function describeNight(now, observer, { moonMaxIllumination = 30, bortle = 0 } = {}) {
@@ -128,9 +150,13 @@ export function describeNight(now, observer, { moonMaxIllumination = 30, bortle 
   const moonless = moonlessWindow(darkest, observer, moonMaxIllumination);
   let bestScore = 0;
   let bestAt = null;
-  for (const t of sampleTimes(night.start, night.end, 15)) {
+  const curve = [];
+  const curveStart = new Date(night.start.getTime() - HOUR_MS);
+  const curveEnd = new Date(night.end.getTime() + HOUR_MS);
+  for (const t of sampleTimes(curveStart, curveEnd, 15)) {
     const score = skyScore(t, observer, { bortle });
-    if (score > bestScore) {
+    curve.push({ t, score });
+    if (t >= night.start && t <= night.end && score > bestScore) {
       bestScore = score;
       bestAt = t;
     }
@@ -143,6 +169,7 @@ export function describeNight(now, observer, { moonMaxIllumination = 30, bortle 
     moonless,
     bestScore,
     bestAt,
+    curve,
     moonIllumination: round(moonIllumination(midnight), 0),
     noAstronomicalNight: !tw.astronomical.dusk,
   };

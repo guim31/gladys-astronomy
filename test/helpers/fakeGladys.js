@@ -5,16 +5,19 @@
 //   - externalIds(type, platformId) -> { device, feature(key) }
 //   - publishStates / publishDiscoveredDevices / publishTransports /
 //     setConnectionStatus -> recorded so tests can assert them
+//   - publishSceneEvent / requestWidgetRefresh -> recorded (Gladys 5.1)
 //   - httpClient.get('/house')     -> scriptable answer
 // -----------------------------------------------------------------------------
 
-export function createFakeGladys({ houses = [] } = {}) {
+export function createFakeGladys({ houses = [], sceneEventError = null } = {}) {
   const published = [];
   const batches = [];
   const transports = [];
   const connectionStatuses = [];
   const discovered = [];
   const httpCalls = [];
+  const sceneEvents = [];
+  const widgetRefreshes = [];
 
   return {
     published,
@@ -24,6 +27,10 @@ export function createFakeGladys({ houses = [] } = {}) {
     discovered,
     httpCalls,
     houses,
+    sceneEvents,
+    widgetRefreshes,
+    /** Set to an Error (with `status`) to make publishSceneEvent fail. */
+    sceneEventError,
 
     externalIds(type, platformId) {
       const device = `${type}:${platformId}`;
@@ -58,6 +65,18 @@ export function createFakeGladys({ houses = [] } = {}) {
 
     async setConnectionStatus(connected, message) {
       connectionStatuses.push({ connected, message });
+    },
+
+    async publishSceneEvent(key, data) {
+      if (this.sceneEventError) {
+        throw this.sceneEventError;
+      }
+      sceneEvents.push({ key, data });
+      return { success: true };
+    },
+
+    requestWidgetRefresh(key) {
+      widgetRefreshes.push(key);
     },
 
     httpClient: {

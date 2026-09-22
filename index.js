@@ -9,6 +9,8 @@
 //   - src/scheduler.js  the four cadences and the state publication
 //   - src/devices/      the Gladys device payloads
 //   - src/actions.js    the Configuration-screen buttons
+//   - src/widgets/      the dashboard widgets (Gladys 5.1)
+//   - src/scene-events.js / src/scene-actions.js  scene triggers and actions
 //
 // Environment variables provided by the Gladys supervisor to the container:
 //   - GLADYS_HOST_API_URL, GLADYS_INTEGRATION_TOKEN, GLADYS_INTEGRATION_SELECTOR
@@ -24,6 +26,9 @@ import { createEngine } from './src/engine.js';
 import { startScheduler, MESSAGES } from './src/scheduler.js';
 import { buildDiscoveredDevices } from './src/devices/index.js';
 import { ACTIONS } from './src/actions.js';
+import { WIDGETS } from './src/widgets/index.js';
+import { SCENE_ACTIONS } from './src/scene-actions.js';
+import { createEventScheduler } from './src/scene-events.js';
 
 const DATA_DIR = process.env.DATA_DIR || '/data';
 const LOCATION_RETRY_MS = 10 * 60 * 1000;
@@ -69,11 +74,13 @@ async function restart() {
       `(${location.source}${location.houseName ? `: ${location.houseName}` : ''}), TZ=${process.env.TZ || 'UTC'}`,
   );
   engine = createEngine({ config, location, dataDir: DATA_DIR });
+  const events = createEventScheduler({ gladys, dataDir: DATA_DIR });
   try {
-    scheduler = await startScheduler({ gladys, config, engine });
+    scheduler = await startScheduler({ gladys, config, engine, events });
     await gladys.setConnectionStatus(true);
   } catch (err) {
     logger.error('Start failed', err);
+    events.stop();
     stopEverything();
     await gladys.setConnectionStatus(false, { en: err.message, fr: err.message }).catch(() => {});
     retryTimer = setTimeout(() => queue(restart), 60000);
@@ -120,6 +127,22 @@ gladys.onSetValue(async (device, feature) => {
 // --- Manifest actions --------------------------------------------------------
 for (const [key, handler] of Object.entries(ACTIONS)) {
   gladys.onAction(key, (fields) => handler({ fields, config, scheduler, engine, location }));
+}
+
+// --- Dashboard widgets (Gladys 5.1) -------------------------------------------
+// Gladys pulls the content when a dashboard shows the widget; the builders
+// only read the snapshot, in the language of the user looking at it.
+for (const [key, build] of Object.entries(WIDGETS)) {
+  gladys.onWidgetGet(key, ({ settings, language }) =>
+    build(engine?.getSnapshot(), { settings, language, now: new Date(), config }),
+  );
+}
+
+// --- Scene actions (Gladys 5.1) ----------------------------------------------
+for (const [key, handler] of Object.entries(SCENE_ACTIONS)) {
+  gladys.onSceneAction(key, (fields) =>
+    handler(fields, { snapshot: engine?.getSnapshot(), config, now: new Date() }),
+  );
 }
 
 // --- Configuration updated by the user ---------------------------------------

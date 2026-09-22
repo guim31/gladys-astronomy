@@ -8,7 +8,7 @@
   },
   "version": "0.1.0",
   "docker_image": "ghcr.io/guim31/gladys-astronomy:0.1.0",
-  "gladys_version": ">=4.86.0",
+  "gladys_version": ">=5.1.0",
   "cover_image": "https://raw.githubusercontent.com/guim31/gladys-astronomy/main/cover.png",
   "categories": ["environment", "services"],
   "transports": ["cloud"],
@@ -50,8 +50,20 @@
       "required": false,
       "default": "fr",
       "options": [
-        { "value": "fr", "label": { "en": "French", "fr": "Français" } },
-        { "value": "en", "label": { "en": "English", "fr": "Anglais" } }
+        {
+          "value": "fr",
+          "label": {
+            "en": "French",
+            "fr": "Français"
+          }
+        },
+        {
+          "value": "en",
+          "label": {
+            "en": "English",
+            "fr": "Anglais"
+          }
+        }
       ]
     },
     {
@@ -239,6 +251,1044 @@
         "fr": "Tester le service NOAA"
       },
       "timeout_seconds": 30
+    }
+  ],
+  "widgets": [
+    {
+      "key": "astro_tonight",
+      "label": {
+        "en": "Tonight's sky",
+        "fr": "Cette nuit"
+      },
+      "description": {
+        "en": "Sky quality through the night, moonless window and visible planets.",
+        "fr": "Qualité du ciel sur la nuit, fenêtre sans Lune et planètes visibles."
+      },
+      "icon": "moon"
+    },
+    {
+      "key": "astro_agenda",
+      "label": {
+        "en": "Sky agenda",
+        "fr": "Agenda du ciel"
+      },
+      "description": {
+        "en": "The next eclipses, meteor peaks, conjunctions and seasons.",
+        "fr": "Prochaines éclipses, étoiles filantes, conjonctions et saisons."
+      },
+      "icon": "calendar",
+      "settings": [
+        {
+          "key": "categories",
+          "type": "multi_select",
+          "label": {
+            "en": "Events to show",
+            "fr": "Événements à afficher"
+          },
+          "description": {
+            "en": "Leave empty to show everything.",
+            "fr": "Laissez vide pour tout afficher."
+          },
+          "required": false,
+          "options": [
+            {
+              "value": "eclipses",
+              "label": {
+                "en": "Eclipses",
+                "fr": "Éclipses"
+              }
+            },
+            {
+              "value": "meteors",
+              "label": {
+                "en": "Meteor showers",
+                "fr": "Étoiles filantes"
+              }
+            },
+            {
+              "value": "conjunctions",
+              "label": {
+                "en": "Conjunctions",
+                "fr": "Conjonctions"
+              }
+            },
+            {
+              "value": "planets",
+              "label": {
+                "en": "Oppositions and elongations",
+                "fr": "Oppositions et élongations"
+              }
+            },
+            {
+              "value": "seasons",
+              "label": {
+                "en": "Seasons and orbit",
+                "fr": "Saisons et orbite"
+              }
+            },
+            {
+              "value": "transits",
+              "label": {
+                "en": "Transits",
+                "fr": "Transits"
+              }
+            }
+          ]
+        },
+        {
+          "key": "horizon_days",
+          "type": "select",
+          "label": {
+            "en": "Period",
+            "fr": "Période"
+          },
+          "required": false,
+          "default": "90",
+          "options": [
+            {
+              "value": "30",
+              "label": {
+                "en": "30 days",
+                "fr": "30 jours"
+              }
+            },
+            {
+              "value": "90",
+              "label": {
+                "en": "3 months",
+                "fr": "3 mois"
+              }
+            },
+            {
+              "value": "365",
+              "label": {
+                "en": "1 year",
+                "fr": "1 an"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "key": "astro_aurora",
+      "label": {
+        "en": "Aurora",
+        "fr": "Aurores"
+      },
+      "description": {
+        "en": "NOAA Kp index, observed and forecast, with the alert level.",
+        "fr": "Indice Kp de la NOAA, observé et prévu, avec le niveau d'alerte."
+      },
+      "icon": "activity"
+    },
+    {
+      "key": "astro_eclipse",
+      "label": {
+        "en": "Next eclipse",
+        "fr": "Prochaine éclipse"
+      },
+      "description": {
+        "en": "Countdown and phases of the next eclipse visible from home.",
+        "fr": "Compte à rebours et phases de la prochaine éclipse visible de chez vous."
+      },
+      "icon": "sun",
+      "settings": [
+        {
+          "key": "kind",
+          "type": "select",
+          "label": {
+            "en": "Eclipse",
+            "fr": "Éclipse"
+          },
+          "required": false,
+          "default": "any",
+          "options": [
+            {
+              "value": "any",
+              "label": {
+                "en": "The next one",
+                "fr": "La prochaine"
+              }
+            },
+            {
+              "value": "solar",
+              "label": {
+                "en": "Solar",
+                "fr": "Solaire"
+              }
+            },
+            {
+              "value": "lunar",
+              "label": {
+                "en": "Lunar",
+                "fr": "Lunaire"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scene_triggers": [
+    {
+      "key": "eclipse_phase",
+      "label": {
+        "en": "Eclipse begins or peaks",
+        "fr": "Début ou maximum d'éclipse"
+      },
+      "description": {
+        "en": "An eclipse visible from home starts, or reaches its maximum.",
+        "fr": "Une éclipse visible de chez vous commence, ou atteint son maximum."
+      },
+      "fields": [
+        {
+          "key": "body",
+          "type": "multi_select",
+          "label": {
+            "en": "Eclipse of",
+            "fr": "Éclipse de"
+          },
+          "required": false,
+          "options": [
+            {
+              "value": "sun",
+              "label": {
+                "en": "the Sun",
+                "fr": "Soleil"
+              }
+            },
+            {
+              "value": "moon",
+              "label": {
+                "en": "the Moon",
+                "fr": "Lune"
+              }
+            }
+          ]
+        },
+        {
+          "key": "phase",
+          "type": "select",
+          "label": {
+            "en": "Moment",
+            "fr": "Moment"
+          },
+          "required": false,
+          "options": [
+            {
+              "value": "begin",
+              "label": {
+                "en": "Beginning",
+                "fr": "Début"
+              }
+            },
+            {
+              "value": "peak",
+              "label": {
+                "en": "Maximum",
+                "fr": "Maximum"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "body",
+          "type": "string",
+          "label": {
+            "en": "Sun or Moon",
+            "fr": "Soleil ou Lune"
+          }
+        },
+        {
+          "key": "kind",
+          "type": "string",
+          "label": {
+            "en": "Kind",
+            "fr": "Type"
+          }
+        },
+        {
+          "key": "phase",
+          "type": "string",
+          "label": {
+            "en": "Moment",
+            "fr": "Moment"
+          }
+        },
+        {
+          "key": "obscuration",
+          "type": "number",
+          "label": {
+            "en": "Obscuration (%)",
+            "fr": "Obscuration (%)"
+          }
+        },
+        {
+          "key": "peak_time",
+          "type": "string",
+          "label": {
+            "en": "Maximum time",
+            "fr": "Heure du maximum"
+          }
+        },
+        {
+          "key": "end_time",
+          "type": "string",
+          "label": {
+            "en": "End time",
+            "fr": "Heure de fin"
+          }
+        },
+        {
+          "key": "description",
+          "type": "string",
+          "label": {
+            "en": "Description",
+            "fr": "Description"
+          }
+        }
+      ]
+    },
+    {
+      "key": "dark_window_starting",
+      "label": {
+        "en": "Moonless dark sky begins",
+        "fr": "Début du ciel noir sans Lune"
+      },
+      "description": {
+        "en": "The darkest, moonless part of the night starts.",
+        "fr": "La partie la plus noire de la nuit, sans Lune, commence."
+      },
+      "variables": [
+        {
+          "key": "duration_minutes",
+          "type": "number",
+          "label": {
+            "en": "Duration (min)",
+            "fr": "Durée (min)"
+          }
+        },
+        {
+          "key": "end_time",
+          "type": "string",
+          "label": {
+            "en": "End time",
+            "fr": "Heure de fin"
+          }
+        },
+        {
+          "key": "best_score",
+          "type": "number",
+          "label": {
+            "en": "Best sky score",
+            "fr": "Meilleur score du ciel"
+          }
+        },
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Night summary",
+            "fr": "Résumé de la nuit"
+          }
+        }
+      ]
+    },
+    {
+      "key": "meteor_peak_night",
+      "label": {
+        "en": "Meteor shower peak tonight",
+        "fr": "Pic d'étoiles filantes ce soir"
+      },
+      "description": {
+        "en": "At dusk on the night of a meteor shower peak.",
+        "fr": "Au crépuscule de la nuit d'un pic d'étoiles filantes."
+      },
+      "fields": [
+        {
+          "key": "shower",
+          "type": "multi_select",
+          "label": {
+            "en": "Shower",
+            "fr": "Pluie"
+          },
+          "required": false,
+          "options": [
+            {
+              "value": "QUA",
+              "label": {
+                "en": "Quadrantids",
+                "fr": "Quadrantides"
+              }
+            },
+            {
+              "value": "LYR",
+              "label": {
+                "en": "Lyrids",
+                "fr": "Lyrides"
+              }
+            },
+            {
+              "value": "ETA",
+              "label": {
+                "en": "Eta Aquariids",
+                "fr": "Êta Aquarides"
+              }
+            },
+            {
+              "value": "SDA",
+              "label": {
+                "en": "Southern Delta Aquariids",
+                "fr": "Delta Aquarides Sud"
+              }
+            },
+            {
+              "value": "CAP",
+              "label": {
+                "en": "Alpha Capricornids",
+                "fr": "Alpha Capricornides"
+              }
+            },
+            {
+              "value": "PER",
+              "label": {
+                "en": "Perseids",
+                "fr": "Perséides"
+              }
+            },
+            {
+              "value": "DRA",
+              "label": {
+                "en": "Draconids",
+                "fr": "Draconides"
+              }
+            },
+            {
+              "value": "ORI",
+              "label": {
+                "en": "Orionids",
+                "fr": "Orionides"
+              }
+            },
+            {
+              "value": "STA",
+              "label": {
+                "en": "Southern Taurids",
+                "fr": "Taurides Sud"
+              }
+            },
+            {
+              "value": "NTA",
+              "label": {
+                "en": "Northern Taurids",
+                "fr": "Taurides Nord"
+              }
+            },
+            {
+              "value": "LEO",
+              "label": {
+                "en": "Leonids",
+                "fr": "Léonides"
+              }
+            },
+            {
+              "value": "GEM",
+              "label": {
+                "en": "Geminids",
+                "fr": "Géminides"
+              }
+            },
+            {
+              "value": "URS",
+              "label": {
+                "en": "Ursids",
+                "fr": "Ursides"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "shower",
+          "type": "string",
+          "label": {
+            "en": "Shower code",
+            "fr": "Code de la pluie"
+          }
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "label": {
+            "en": "Shower",
+            "fr": "Pluie"
+          }
+        },
+        {
+          "key": "zhr",
+          "type": "number",
+          "label": {
+            "en": "ZHR",
+            "fr": "ZHR"
+          }
+        },
+        {
+          "key": "peak_time",
+          "type": "string",
+          "label": {
+            "en": "Peak time",
+            "fr": "Heure du pic"
+          }
+        },
+        {
+          "key": "moon_illumination",
+          "type": "number",
+          "label": {
+            "en": "Moon illumination (%)",
+            "fr": "Illumination de la Lune (%)"
+          }
+        },
+        {
+          "key": "description",
+          "type": "string",
+          "label": {
+            "en": "Description",
+            "fr": "Description"
+          }
+        }
+      ]
+    },
+    {
+      "key": "conjunction_tonight",
+      "label": {
+        "en": "Visible conjunction tonight",
+        "fr": "Conjonction visible ce soir"
+      },
+      "description": {
+        "en": "At dusk on the night of a close approach you can see.",
+        "fr": "Au crépuscule de la nuit d'un rapprochement observable."
+      },
+      "fields": [
+        {
+          "key": "involves_moon",
+          "type": "select",
+          "label": {
+            "en": "With the Moon",
+            "fr": "Avec la Lune"
+          },
+          "required": false,
+          "options": [
+            {
+              "value": "yes",
+              "label": {
+                "en": "Yes",
+                "fr": "Oui"
+              }
+            },
+            {
+              "value": "no",
+              "label": {
+                "en": "No, planets only",
+                "fr": "Non, planètes seules"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "bodies",
+          "type": "string",
+          "label": {
+            "en": "Bodies",
+            "fr": "Astres"
+          }
+        },
+        {
+          "key": "separation",
+          "type": "number",
+          "label": {
+            "en": "Separation (°)",
+            "fr": "Séparation (°)"
+          }
+        },
+        {
+          "key": "time",
+          "type": "string",
+          "label": {
+            "en": "Closest approach",
+            "fr": "Rapprochement maximal"
+          }
+        },
+        {
+          "key": "description",
+          "type": "string",
+          "label": {
+            "en": "Description",
+            "fr": "Description"
+          }
+        }
+      ]
+    },
+    {
+      "key": "aurora_alert",
+      "label": {
+        "en": "Aurora alert rises",
+        "fr": "Alerte aurores en hausse"
+      },
+      "description": {
+        "en": "The NOAA Kp alert level goes up (active, storm, strong storm).",
+        "fr": "Le niveau d'alerte Kp de la NOAA monte (actif, orage, orage fort)."
+      },
+      "fields": [
+        {
+          "key": "level",
+          "type": "select",
+          "label": {
+            "en": "Level reached",
+            "fr": "Niveau atteint"
+          },
+          "required": false,
+          "options": [
+            {
+              "value": "1",
+              "label": {
+                "en": "Active (Kp 4-5)",
+                "fr": "Actif (Kp 4-5)"
+              }
+            },
+            {
+              "value": "2",
+              "label": {
+                "en": "Storm (Kp 5-7)",
+                "fr": "Orage (Kp 5-7)"
+              }
+            },
+            {
+              "value": "3",
+              "label": {
+                "en": "Strong storm (Kp 7+)",
+                "fr": "Orage fort (Kp 7+)"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "level",
+          "type": "number",
+          "label": {
+            "en": "Alert level",
+            "fr": "Niveau d'alerte"
+          }
+        },
+        {
+          "key": "kp",
+          "type": "number",
+          "label": {
+            "en": "Current Kp",
+            "fr": "Kp actuel"
+          }
+        },
+        {
+          "key": "kp_max_24h",
+          "type": "number",
+          "label": {
+            "en": "Kp max 24 h",
+            "fr": "Kp max 24 h"
+          }
+        },
+        {
+          "key": "next_alert",
+          "type": "string",
+          "label": {
+            "en": "Next alert period",
+            "fr": "Prochaine période d'alerte"
+          }
+        },
+        {
+          "key": "description",
+          "type": "string",
+          "label": {
+            "en": "Description",
+            "fr": "Description"
+          }
+        }
+      ]
+    },
+    {
+      "key": "season_starting",
+      "label": {
+        "en": "Season begins",
+        "fr": "Début d'une saison"
+      },
+      "description": {
+        "en": "At the exact instant of an equinox or a solstice.",
+        "fr": "À l'instant exact d'un équinoxe ou d'un solstice."
+      },
+      "fields": [
+        {
+          "key": "kind",
+          "type": "multi_select",
+          "label": {
+            "en": "Season",
+            "fr": "Saison"
+          },
+          "required": false,
+          "options": [
+            {
+              "value": "march-equinox",
+              "label": {
+                "en": "March equinox",
+                "fr": "Équinoxe de printemps"
+              }
+            },
+            {
+              "value": "june-solstice",
+              "label": {
+                "en": "June solstice",
+                "fr": "Solstice d'été"
+              }
+            },
+            {
+              "value": "september-equinox",
+              "label": {
+                "en": "September equinox",
+                "fr": "Équinoxe d'automne"
+              }
+            },
+            {
+              "value": "december-solstice",
+              "label": {
+                "en": "December solstice",
+                "fr": "Solstice d'hiver"
+              }
+            }
+          ]
+        }
+      ],
+      "variables": [
+        {
+          "key": "kind",
+          "type": "string",
+          "label": {
+            "en": "Season code",
+            "fr": "Code de la saison"
+          }
+        },
+        {
+          "key": "name",
+          "type": "string",
+          "label": {
+            "en": "Season",
+            "fr": "Saison"
+          }
+        },
+        {
+          "key": "day_length_hours",
+          "type": "number",
+          "label": {
+            "en": "Day length (h)",
+            "fr": "Durée du jour (h)"
+          }
+        }
+      ]
+    }
+  ],
+  "scene_actions": [
+    {
+      "key": "next_event",
+      "label": {
+        "en": "Next sky event",
+        "fr": "Prochain événement du ciel"
+      },
+      "description": {
+        "en": "Finds the next eclipse, meteor peak, conjunction, opposition or season.",
+        "fr": "Trouve la prochaine éclipse, étoile filante, conjonction, opposition ou saison."
+      },
+      "timeout_seconds": 10,
+      "fields": [
+        {
+          "key": "category",
+          "type": "select",
+          "label": {
+            "en": "Kind of event",
+            "fr": "Type d'événement"
+          },
+          "required": false,
+          "default": "any",
+          "options": [
+            {
+              "value": "any",
+              "label": {
+                "en": "Any",
+                "fr": "Tous"
+              }
+            },
+            {
+              "value": "eclipses",
+              "label": {
+                "en": "Eclipses",
+                "fr": "Éclipses"
+              }
+            },
+            {
+              "value": "meteors",
+              "label": {
+                "en": "Meteor showers",
+                "fr": "Étoiles filantes"
+              }
+            },
+            {
+              "value": "conjunctions",
+              "label": {
+                "en": "Conjunctions",
+                "fr": "Conjonctions"
+              }
+            },
+            {
+              "value": "planets",
+              "label": {
+                "en": "Oppositions and elongations",
+                "fr": "Oppositions et élongations"
+              }
+            },
+            {
+              "value": "seasons",
+              "label": {
+                "en": "Seasons and orbit",
+                "fr": "Saisons et orbite"
+              }
+            },
+            {
+              "value": "transits",
+              "label": {
+                "en": "Transits",
+                "fr": "Transits"
+              }
+            }
+          ]
+        },
+        {
+          "key": "language",
+          "type": "select",
+          "label": {
+            "en": "Language of the texts",
+            "fr": "Langue des textes"
+          },
+          "required": false,
+          "default": "fr",
+          "options": [
+            {
+              "value": "fr",
+              "label": {
+                "en": "French",
+                "fr": "Français"
+              }
+            },
+            {
+              "value": "en",
+              "label": {
+                "en": "English",
+                "fr": "Anglais"
+              }
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "key": "found",
+          "type": "boolean",
+          "label": {
+            "en": "Found",
+            "fr": "Trouvé"
+          }
+        },
+        {
+          "key": "category",
+          "type": "string",
+          "label": {
+            "en": "Category",
+            "fr": "Catégorie"
+          }
+        },
+        {
+          "key": "title",
+          "type": "string",
+          "label": {
+            "en": "Title",
+            "fr": "Titre"
+          }
+        },
+        {
+          "key": "time",
+          "type": "string",
+          "label": {
+            "en": "Time (ISO)",
+            "fr": "Heure (ISO)"
+          }
+        },
+        {
+          "key": "local_time",
+          "type": "string",
+          "label": {
+            "en": "Local date and time",
+            "fr": "Date et heure locales"
+          }
+        },
+        {
+          "key": "days_until",
+          "type": "number",
+          "label": {
+            "en": "Days until",
+            "fr": "Jours restants"
+          }
+        },
+        {
+          "key": "minutes_until",
+          "type": "number",
+          "label": {
+            "en": "Minutes until",
+            "fr": "Minutes restantes"
+          }
+        },
+        {
+          "key": "visible",
+          "type": "boolean",
+          "label": {
+            "en": "Visible from home",
+            "fr": "Visible de chez vous"
+          }
+        },
+        {
+          "key": "description",
+          "type": "string",
+          "label": {
+            "en": "Description",
+            "fr": "Description"
+          }
+        }
+      ]
+    },
+    {
+      "key": "tonight_summary",
+      "label": {
+        "en": "Tonight's sky summary",
+        "fr": "Résumé du ciel de cette nuit"
+      },
+      "description": {
+        "en": "Dark window, sky quality, planets and active shower of the coming night.",
+        "fr": "Fenêtre noire, qualité du ciel, planètes et pluie active de la nuit."
+      },
+      "timeout_seconds": 10,
+      "fields": [
+        {
+          "key": "language",
+          "type": "select",
+          "label": {
+            "en": "Language of the texts",
+            "fr": "Langue des textes"
+          },
+          "required": false,
+          "default": "fr",
+          "options": [
+            {
+              "value": "fr",
+              "label": {
+                "en": "French",
+                "fr": "Français"
+              }
+            },
+            {
+              "value": "en",
+              "label": {
+                "en": "English",
+                "fr": "Anglais"
+              }
+            }
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "key": "summary",
+          "type": "string",
+          "label": {
+            "en": "Summary",
+            "fr": "Résumé"
+          }
+        },
+        {
+          "key": "best_score",
+          "type": "number",
+          "label": {
+            "en": "Best sky score",
+            "fr": "Meilleur score du ciel"
+          }
+        },
+        {
+          "key": "sky_score_now",
+          "type": "number",
+          "label": {
+            "en": "Sky score now",
+            "fr": "Score du ciel maintenant"
+          }
+        },
+        {
+          "key": "dark_start",
+          "type": "string",
+          "label": {
+            "en": "Moonless from",
+            "fr": "Sans Lune dès"
+          }
+        },
+        {
+          "key": "dark_end",
+          "type": "string",
+          "label": {
+            "en": "Moonless until",
+            "fr": "Sans Lune jusqu'à"
+          }
+        },
+        {
+          "key": "dark_minutes",
+          "type": "number",
+          "label": {
+            "en": "Moonless minutes",
+            "fr": "Minutes sans Lune"
+          }
+        },
+        {
+          "key": "planets",
+          "type": "string",
+          "label": {
+            "en": "Visible planets",
+            "fr": "Planètes visibles"
+          }
+        },
+        {
+          "key": "moon_illumination",
+          "type": "number",
+          "label": {
+            "en": "Moon illumination (%)",
+            "fr": "Illumination de la Lune (%)"
+          }
+        },
+        {
+          "key": "active_shower",
+          "type": "string",
+          "label": {
+            "en": "Active shower",
+            "fr": "Pluie active"
+          }
+        }
+      ]
     }
   ]
 }

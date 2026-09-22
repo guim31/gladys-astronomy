@@ -66,6 +66,34 @@ test('start publishes the devices, then every state, then schedules the ticks', 
   scheduler.stop();
 });
 
+test('each scope nudges its widgets and re-plans the scene events', async (t) => {
+  const { config, gladys, engine } = setup(t);
+  const calls = { replan: 0, aurora: [] };
+  const events = {
+    async replan(list) {
+      calls.replan += 1;
+      assert.ok(Array.isArray(list) && list.length > 0);
+    },
+    async onAuroraSummary(summary) {
+      calls.aurora.push(summary.alertLevel);
+    },
+    stop() {
+      calls.stopped = true;
+    },
+  };
+  const scheduler = await startScheduler({ gladys, config, engine, events });
+  assert.equal(calls.replan, 2, 'after the rare and the night scopes');
+  assert.deepEqual(calls.aurora, [0]);
+  assert.deepEqual([...new Set(gladys.widgetRefreshes)].sort(), [
+    'astro_agenda',
+    'astro_aurora',
+    'astro_eclipse',
+    'astro_tonight',
+  ]);
+  scheduler.stop();
+  assert.equal(calls.stopped, true);
+});
+
 test('poll(device) answers with the states of that device only', async (t) => {
   const { config, gladys, engine } = setup(t);
   const scheduler = await startScheduler({ gladys, config, engine });
