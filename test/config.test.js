@@ -36,4 +36,8 @@ test('the location override needs both coordinates', () => {
   assert.equal(both.elevation, 0);
   assert.equal(normalizeConfig({ latitude: 'x', longitude: 2 }).latitude, null);
   assert.equal(normalizeConfig({ latitude: 95, longitude: 2 }).latitude, 90);
+  // Text fields: decimal comma or point, spaces tolerated.
+  const typed = normalizeConfig({ latitude: ' 48,8566 ', longitude: '2.3522' });
+  assert.deepEqual([typed.latitude, typed.longitude], [48.8566, 2.3522]);
+  assert.equal(normalizeConfig({ latitude: '  ', longitude: '2' }).latitude, null);
 });

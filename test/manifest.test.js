@@ -107,7 +107,10 @@ test('the house coordinates are requested, descriptions fit the store limit', ()
 test('config_schema defaults and bounds stay consistent with the code', () => {
   for (const field of manifest.config_schema) {
     if (field.default !== undefined) {
-      assert.equal(DEFAULT_CONFIG[field.key], field.default, `default of ${field.key}`);
+      // select values are strings in the manifest, parsed by normalizeConfig
+      const expected =
+        field.type === 'select' ? String(DEFAULT_CONFIG[field.key]) : DEFAULT_CONFIG[field.key];
+      assert.equal(expected, field.default, `default of ${field.key}`);
     }
     if (field.type === 'number') {
       assert.deepEqual(
@@ -122,6 +125,26 @@ test('config_schema defaults and bounds stay consistent with the code', () => {
     language.options.map((o) => o.value),
     LANGUAGES,
   );
+});
+
+test('number fields only accept what the Gladys form lets the user type', () => {
+  // The form renders <input type="number" min max> without a step: the
+  // browser then only accepts min + k (step 1). A decimal min (0.5) rejected
+  // the default 3, reported on the forum by Will_71; a min of -90 rejected
+  // every decimal latitude. Decimal values belong in a select or a string.
+  for (const field of manifest.config_schema.filter((f) => f.type === 'number')) {
+    assert.ok(Number.isInteger(field.min), `${field.key}: min must be an integer`);
+    if (field.default !== undefined) {
+      assert.ok(Number.isInteger(field.default - field.min), `${field.key}: default unreachable`);
+    }
+  }
+  const separation = manifest.config_schema.find((f) => f.key === 'conjunction_max_separation');
+  for (const option of separation.options) {
+    const value = normalizeConfig({
+      conjunction_max_separation: option.value,
+    }).conjunction_max_separation;
+    assert.equal(value, Number(option.value));
+  }
 });
 
 test('every value-bearing config_schema field is normalized by the code', () => {

@@ -14,7 +14,7 @@ export const DEFAULT_CONFIG = {
   language: 'fr', // language of the text sensors
   refresh_minutes: 5, // cadence of the countdown / instantaneous sensors
   conjunction_lookahead_days: 90, // how far ahead conjunctions are searched
-  conjunction_max_separation: 3, // degrees: closer than this is a conjunction
+  conjunction_max_separation: 3, // degrees (a select in the manifest: 0.5 to 10)
   meteor_min_zhr: 10, // showers below this rate are ignored
   moon_max_illumination: 30, // percent: the Moon is "quiet" below this
   bortle: 0, // 1-9 light pollution class, 0 = ignored
@@ -66,13 +66,15 @@ function toBoolean(raw, fallback) {
 }
 
 /**
- * Optional coordinate: null when left empty.
+ * Optional coordinate: null when left empty. Typed in a text field (a number
+ * field of the Gladys form only accepts integers when its min is an
+ * integer), so a decimal comma is accepted as well as a point.
  */
 function toOptionalNumber(raw, limits) {
-  if (raw === null || raw === undefined || raw === '') {
+  if (raw === null || raw === undefined || String(raw).trim() === '') {
     return null;
   }
-  const value = Number(raw);
+  const value = Number(String(raw).trim().replace(',', '.'));
   return Number.isFinite(value) ? Math.min(limits.max, Math.max(limits.min, value)) : null;
 }
 

@@ -96,19 +96,61 @@
     },
     {
       "key": "conjunction_max_separation",
-      "type": "number",
+      "type": "select",
       "label": {
-        "en": "Conjunction: maximum separation (°)",
-        "fr": "Conjonction : séparation maximale (°)"
+        "en": "Conjunction: maximum separation",
+        "fr": "Conjonction : séparation maximale"
       },
       "description": {
         "en": "Two bodies closer than this angle count as a conjunction. The full Moon is 0.5° wide.",
         "fr": "Deux astres plus proches que cet angle forment une conjonction. La pleine Lune fait 0,5° de large."
       },
       "required": false,
-      "default": 3,
-      "min": 0.5,
-      "max": 10
+      "default": "3",
+      "options": [
+        {
+          "value": "0.5",
+          "label": {
+            "en": "0.5°",
+            "fr": "0,5°"
+          }
+        },
+        {
+          "value": "1",
+          "label": {
+            "en": "1°",
+            "fr": "1°"
+          }
+        },
+        {
+          "value": "2",
+          "label": {
+            "en": "2°",
+            "fr": "2°"
+          }
+        },
+        {
+          "value": "3",
+          "label": {
+            "en": "3°",
+            "fr": "3°"
+          }
+        },
+        {
+          "value": "5",
+          "label": {
+            "en": "5°",
+            "fr": "5°"
+          }
+        },
+        {
+          "value": "10",
+          "label": {
+            "en": "10°",
+            "fr": "10°"
+          }
+        }
+      ]
     },
     {
       "key": "meteor_min_zhr",
@@ -202,25 +244,37 @@
     },
     {
       "key": "latitude",
-      "type": "number",
+      "type": "string",
       "label": {
         "en": "Latitude (°)",
         "fr": "Latitude (°)"
       },
+      "description": {
+        "en": "Decimal degrees, north positive, e.g. 48.8566.",
+        "fr": "Degrés décimaux, nord positif, par exemple 48,8566."
+      },
       "required": false,
-      "min": -90,
-      "max": 90
+      "placeholder": {
+        "en": "48.8566",
+        "fr": "48,8566"
+      }
     },
     {
       "key": "longitude",
-      "type": "number",
+      "type": "string",
       "label": {
         "en": "Longitude (°)",
         "fr": "Longitude (°)"
       },
+      "description": {
+        "en": "Decimal degrees, east positive, e.g. 2.3522.",
+        "fr": "Degrés décimaux, est positif, par exemple 2,3522."
+      },
       "required": false,
-      "min": -180,
-      "max": 180
+      "placeholder": {
+        "en": "2.3522",
+        "fr": "2,3522"
+      }
     },
     {
       "key": "elevation",
