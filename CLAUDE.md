@@ -37,6 +37,10 @@ et orbite, Aurores), qui gardent historique et seuils, plus quatre widgets : `as
   conjonction un `select` de 0,5 à 10°. En `number`, le min décimal 0,5 refusait son propre défaut
   de 3, et les min -90/-180 refusaient toute coordonnée décimale (retour de Will_71 sur le forum,
   corrigé en 1.0.1, test de régression dans `manifest.test.js`).
+- Textes en quatre langues (`en`, `fr`, `de`, `es`), comme l'interface de Gladys : l'allemand
+  tutoie, l'espagnol vouvoie (décision de Guilhem, 11/10/2026). `test/i18n.test.js` refuse un objet
+  multilingue sans les quatre, un texte vide ou trop long, un « Sie »/« Ihr » allemand, et un
+  message en ligne du code (`{ en, fr }`) qui oublie une langue.
 - Cover : `cover.jpg` 800×534. Le PNG d'origine pesait 468 Ko, au-delà de la limite.
 
 ## Travailler sur ce dépôt

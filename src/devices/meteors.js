@@ -13,7 +13,7 @@ import {
 
 export const DEVICE_TYPE = 'astronomy-meteors';
 
-const NAMES = {
+export const NAMES = {
   fr: {
     device: 'Étoiles filantes',
     active: 'Pluie active',
@@ -33,6 +33,26 @@ const NAMES = {
     nextDays: 'Next peak in',
     nextZhr: 'ZHR of the next peak',
     nextMoon: 'Moon at the next peak',
+  },
+  de: {
+    device: 'Sternschnuppen',
+    active: 'Aktiver Strom',
+    activeFlag: 'Strom läuft',
+    peakTonight: 'Maximum heute Nacht',
+    next: 'Nächstes Maximum',
+    nextDays: 'Nächstes Maximum in',
+    nextZhr: 'ZHR des nächsten Maximums',
+    nextMoon: 'Mond beim nächsten Maximum',
+  },
+  es: {
+    device: 'Estrellas fugaces',
+    active: 'Lluvia activa',
+    activeFlag: 'Lluvia en curso',
+    peakTonight: 'Máximo esta noche',
+    next: 'Próximo máximo',
+    nextDays: 'Próximo máximo en',
+    nextZhr: 'THZ del próximo máximo',
+    nextMoon: 'Luna en el próximo máximo',
   },
 };
 

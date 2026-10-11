@@ -25,7 +25,7 @@ export const DEFAULT_CONFIG = {
   elevation: 0, // meters
 };
 
-export const LANGUAGES = ['fr', 'en'];
+export const LANGUAGES = ['fr', 'en', 'de', 'es'];
 
 // Bounds of the numeric fields, shared with the manifest (`min`/`max`).
 export const LIMITS = {

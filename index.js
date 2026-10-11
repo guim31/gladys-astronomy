@@ -82,7 +82,14 @@ async function restart() {
     logger.error('Start failed', err);
     events.stop();
     stopEverything();
-    await gladys.setConnectionStatus(false, { en: err.message, fr: err.message }).catch(() => {});
+    await gladys
+      .setConnectionStatus(false, {
+        en: err.message,
+        fr: err.message,
+        de: err.message,
+        es: err.message,
+      })
+      .catch(() => {});
     retryTimer = setTimeout(() => queue(restart), 60000);
     retryTimer.unref?.();
   }

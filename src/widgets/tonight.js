@@ -86,7 +86,7 @@ export function build(snapshot, { language }) {
   if (shower) {
     items.push({
       label: s.shower,
-      value: `${fmt.showerName(shower)} · ZHR ${shower.zhr}`,
+      value: `${fmt.showerName(shower)} · ${fmt.t.zhr} ${shower.zhr}`,
       icon: 'star',
       color: 'primary',
     });

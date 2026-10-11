@@ -12,7 +12,7 @@ test('every widget passes the SDK validator untouched, in every language, on sev
   for (const iso of DATES) {
     const { snapshot, config, now } = await computedSnapshot(iso);
     for (const [key, build] of Object.entries(WIDGETS)) {
-      for (const language of ['fr', 'en', 'de']) {
+      for (const language of ['fr', 'en', 'de', 'es', 'it']) {
         const content = build(snapshot, { settings: {}, language, now, config });
         assert.deepEqual(validateWidgetContent(content), [], `${key} ${language} ${iso}`);
         assert.ok(content.components.length > 0);

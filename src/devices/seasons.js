@@ -4,7 +4,7 @@ import { DEVICE_FEATURE_CATEGORIES, DEVICE_FEATURE_TYPES } from '@gladysassistan
 
 export const DEVICE_TYPE = 'astronomy-seasons';
 
-const NAMES = {
+export const NAMES = {
   fr: {
     device: 'Saisons et orbite',
     next: 'Prochaine saison',
@@ -26,6 +26,28 @@ const NAMES = {
     apsis: 'Next apsis',
     apsisDays: 'Apsis in',
     sunDistance: 'Earth-Sun distance',
+  },
+  de: {
+    device: 'Jahreszeiten und Umlaufbahn',
+    next: 'Nächste Jahreszeit',
+    nextKind: 'Art (Jahreszeit)',
+    nextDays: 'Nächste Jahreszeit in',
+    dayLength: 'Tageslänge',
+    dayDelta: 'Änderung der Tageslänge',
+    apsis: 'Nächste Apside',
+    apsisDays: 'Apside in',
+    sunDistance: 'Abstand Erde-Sonne',
+  },
+  es: {
+    device: 'Estaciones y órbita',
+    next: 'Próxima estación',
+    nextKind: 'Tipo (estación)',
+    nextDays: 'Próxima estación en',
+    dayLength: 'Duración del día',
+    dayDelta: 'Variación del día',
+    apsis: 'Próximo ápside',
+    apsisDays: 'Ápside en',
+    sunDistance: 'Distancia Tierra-Sol',
   },
 };
 

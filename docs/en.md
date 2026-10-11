@@ -79,7 +79,7 @@ dropped.
 
 ## Configuration
 
-- **Language of the texts**: French or English. Sensor names are set when the
+- **Language of the texts**: French, English, German or Spanish. Sensor names are set when the
   device is created; to rename them after a language change, delete and re-add
   the device.
 - **Refresh of countdowns**: cadence of the moving values (days left, flags,

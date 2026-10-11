@@ -4,7 +4,9 @@
   "name": "Astronomie",
   "description": {
     "en": "Eclipses, planets, meteor showers, observing nights, seasons and aurora forecasts for your home.",
-    "fr": "Éclipses, planètes, étoiles filantes, nuit d'observation, saisons et aurores pour votre maison."
+    "fr": "Éclipses, planètes, étoiles filantes, nuit d'observation, saisons et aurores pour votre maison.",
+    "de": "Finsternisse, Planeten, Sternschnuppen, Beobachtungsnacht, Jahreszeiten und Polarlichter bei dir.",
+    "es": "Eclipses, planetas, estrellas fugaces, noches de observación, estaciones y auroras para su hogar."
   },
   "version": "1.0.1",
   "docker_image": "ghcr.io/guim31/gladys-astronomy:1.0.1",
@@ -19,18 +21,24 @@
       "type": "section",
       "label": {
         "en": "How it works",
-        "fr": "Fonctionnement"
+        "fr": "Fonctionnement",
+        "de": "So funktioniert es",
+        "es": "Funcionamiento"
       },
       "description": {
         "en": "Everything is computed locally from the coordinates of your Gladys house (Settings > Houses): eclipses, planets, meteor showers, twilights, seasons. The only outgoing connection is the NOAA space weather service for the aurora forecast, and it can be turned off. Times are shown in the Gladys timezone (Settings > System).",
-        "fr": "Tout est calculé localement à partir des coordonnées de votre maison Gladys (Paramètres > Maisons) : éclipses, planètes, étoiles filantes, crépuscules, saisons. La seule connexion sortante est le service de météo spatiale de la NOAA pour la prévision d'aurores, et elle peut être désactivée. Les heures sont affichées dans le fuseau horaire de Gladys (Paramètres > Système)."
+        "fr": "Tout est calculé localement à partir des coordonnées de votre maison Gladys (Paramètres > Maisons) : éclipses, planètes, étoiles filantes, crépuscules, saisons. La seule connexion sortante est le service de météo spatiale de la NOAA pour la prévision d'aurores, et elle peut être désactivée. Les heures sont affichées dans le fuseau horaire de Gladys (Paramètres > Système).",
+        "de": "Alles wird lokal aus den Koordinaten deines Gladys-Zuhauses berechnet (Einstellungen > Zuhause): Finsternisse, Planeten, Sternschnuppen, Dämmerungen, Jahreszeiten. Die einzige ausgehende Verbindung ist der Weltraumwetterdienst der NOAA für die Polarlichtvorhersage, und sie lässt sich abschalten. Die Uhrzeiten werden in der Zeitzone von Gladys angezeigt (Einstellungen > System).",
+        "es": "Todo se calcula localmente a partir de las coordenadas de su vivienda en Gladys (Configuración > Viviendas): eclipses, planetas, estrellas fugaces, crepúsculos, estaciones. La única conexión saliente es el servicio de meteorología espacial de la NOAA para la previsión de auroras, y puede desactivarse. Las horas se muestran en la zona horaria de Gladys (Configuración > Sistema)."
       },
       "links": [
         {
           "url": "https://www.swpc.noaa.gov/products/planetary-k-index",
           "label": {
             "en": "NOAA planetary K-index",
-            "fr": "Indice K planétaire NOAA"
+            "fr": "Indice K planétaire NOAA",
+            "de": "Planetarer K-Index der NOAA",
+            "es": "Índice K planetario de la NOAA"
           }
         }
       ]
@@ -41,11 +49,15 @@
       "display": "radio",
       "label": {
         "en": "Language of the texts",
-        "fr": "Langue des textes"
+        "fr": "Langue des textes",
+        "de": "Sprache der Texte",
+        "es": "Idioma de los textos"
       },
       "description": {
         "en": "Language of the sensor names and of the text values. Names are set when a device is created: to rename them after a change, delete and re-add the device.",
-        "fr": "Langue des noms de capteurs et des valeurs textuelles. Les noms sont fixés à la création d'un appareil : pour les renommer après un changement, supprimez puis rajoutez l'appareil."
+        "fr": "Langue des noms de capteurs et des valeurs textuelles. Les noms sont fixés à la création d'un appareil : pour les renommer après un changement, supprimez puis rajoutez l'appareil.",
+        "de": "Sprache der Sensornamen und der Textwerte. Die Namen werden beim Anlegen eines Geräts festgelegt: Um sie nach einer Änderung umzubenennen, lösche das Gerät und füge es erneut hinzu.",
+        "es": "Idioma de los nombres de los sensores y de los valores de texto. Los nombres se fijan al crear un dispositivo: para cambiarlos después de una modificación, elimine el dispositivo y vuelva a añadirlo."
       },
       "required": false,
       "default": "fr",
@@ -54,14 +66,36 @@
           "value": "fr",
           "label": {
             "en": "French",
-            "fr": "Français"
+            "fr": "Français",
+            "de": "Französisch",
+            "es": "Francés"
           }
         },
         {
           "value": "en",
           "label": {
             "en": "English",
-            "fr": "Anglais"
+            "fr": "Anglais",
+            "de": "Englisch",
+            "es": "Inglés"
+          }
+        },
+        {
+          "value": "de",
+          "label": {
+            "en": "German",
+            "fr": "Allemand",
+            "de": "Deutsch",
+            "es": "Alemán"
+          }
+        },
+        {
+          "value": "es",
+          "label": {
+            "en": "Spanish",
+            "fr": "Espagnol",
+            "de": "Spanisch",
+            "es": "Español"
           }
         }
       ]
@@ -71,11 +105,15 @@
       "type": "number",
       "label": {
         "en": "Refresh of countdowns (min)",
-        "fr": "Rafraîchissement des comptes à rebours (min)"
+        "fr": "Rafraîchissement des comptes à rebours (min)",
+        "de": "Aktualisierung der Countdowns (min)",
+        "es": "Actualización de las cuentas atrás (min)"
       },
       "description": {
         "en": "Minutes between two updates of the countdowns, flags and instantaneous sky quality. Rare events are recomputed daily at 03:00, the night every 30 minutes.",
-        "fr": "Minutes entre deux mises à jour des comptes à rebours, drapeaux et qualité instantanée du ciel. Les événements rares sont recalculés chaque jour à 03:00, la nuit toutes les 30 minutes."
+        "fr": "Minutes entre deux mises à jour des comptes à rebours, drapeaux et qualité instantanée du ciel. Les événements rares sont recalculés chaque jour à 03:00, la nuit toutes les 30 minutes.",
+        "de": "Minuten zwischen zwei Aktualisierungen der Countdowns, Statuswerte und der aktuellen Himmelsqualität. Seltene Ereignisse werden täglich um 03:00 neu berechnet, die Nacht alle 30 Minuten.",
+        "es": "Minutos entre dos actualizaciones de las cuentas atrás, los indicadores y la calidad instantánea del cielo. Los eventos raros se recalculan cada día a las 03:00, la noche cada 30 minutos."
       },
       "required": false,
       "default": 5,
@@ -87,7 +125,9 @@
       "type": "number",
       "label": {
         "en": "Conjunction search window (days)",
-        "fr": "Fenêtre de recherche des conjonctions (jours)"
+        "fr": "Fenêtre de recherche des conjonctions (jours)",
+        "de": "Suchzeitraum für Konjunktionen (Tage)",
+        "es": "Ventana de búsqueda de conjunciones (días)"
       },
       "required": false,
       "default": 90,
@@ -99,11 +139,15 @@
       "type": "select",
       "label": {
         "en": "Conjunction: maximum separation",
-        "fr": "Conjonction : séparation maximale"
+        "fr": "Conjonction : séparation maximale",
+        "de": "Konjunktion: maximaler Abstand",
+        "es": "Conjunción: separación máxima"
       },
       "description": {
         "en": "Two bodies closer than this angle count as a conjunction. The full Moon is 0.5° wide.",
-        "fr": "Deux astres plus proches que cet angle forment une conjonction. La pleine Lune fait 0,5° de large."
+        "fr": "Deux astres plus proches que cet angle forment une conjonction. La pleine Lune fait 0,5° de large.",
+        "de": "Zwei Himmelskörper, die näher als dieser Winkel beieinander stehen, gelten als Konjunktion. Der Vollmond ist 0,5° breit.",
+        "es": "Dos astros más próximos que este ángulo forman una conjunción. La Luna llena mide 0,5° de ancho."
       },
       "required": false,
       "default": "3",
@@ -112,42 +156,54 @@
           "value": "0.5",
           "label": {
             "en": "0.5°",
-            "fr": "0,5°"
+            "fr": "0,5°",
+            "de": "0,5°",
+            "es": "0,5°"
           }
         },
         {
           "value": "1",
           "label": {
             "en": "1°",
-            "fr": "1°"
+            "fr": "1°",
+            "de": "1°",
+            "es": "1°"
           }
         },
         {
           "value": "2",
           "label": {
             "en": "2°",
-            "fr": "2°"
+            "fr": "2°",
+            "de": "2°",
+            "es": "2°"
           }
         },
         {
           "value": "3",
           "label": {
             "en": "3°",
-            "fr": "3°"
+            "fr": "3°",
+            "de": "3°",
+            "es": "3°"
           }
         },
         {
           "value": "5",
           "label": {
             "en": "5°",
-            "fr": "5°"
+            "fr": "5°",
+            "de": "5°",
+            "es": "5°"
           }
         },
         {
           "value": "10",
           "label": {
             "en": "10°",
-            "fr": "10°"
+            "fr": "10°",
+            "de": "10°",
+            "es": "10°"
           }
         }
       ]
@@ -157,11 +213,15 @@
       "type": "number",
       "label": {
         "en": "Meteor showers: minimum ZHR",
-        "fr": "Étoiles filantes : ZHR minimal"
+        "fr": "Étoiles filantes : ZHR minimal",
+        "de": "Sternschnuppen: minimale ZHR",
+        "es": "Estrellas fugaces: THZ mínima"
       },
       "description": {
         "en": "Showers with a lower hourly rate are ignored (10 keeps the Draconids, Leonids and Ursids; 50 keeps only the big three).",
-        "fr": "Les pluies à taux horaire inférieur sont ignorées (10 garde les Draconides, Léonides et Ursides ; 50 ne garde que les trois grandes)."
+        "fr": "Les pluies à taux horaire inférieur sont ignorées (10 garde les Draconides, Léonides et Ursides ; 50 ne garde que les trois grandes).",
+        "de": "Ströme mit niedrigerer Rate pro Stunde werden ignoriert (10 behält die Draconiden, Leoniden und Ursiden; 50 nur die drei großen).",
+        "es": "Las lluvias con una tasa horaria inferior se ignoran (10 conserva las Dracónidas, Leónidas y Úrsidas; 50 solo las tres grandes)."
       },
       "required": false,
       "default": 10,
@@ -173,11 +233,15 @@
       "type": "number",
       "label": {
         "en": "Moonless window: maximum illumination (%)",
-        "fr": "Fenêtre sans Lune : illumination maximale (%)"
+        "fr": "Fenêtre sans Lune : illumination maximale (%)",
+        "de": "Mondloses Fenster: maximale Beleuchtung (%)",
+        "es": "Ventana sin Luna: iluminación máxima (%)"
       },
       "description": {
         "en": "A Moon thinner than this does not spoil the dark window.",
-        "fr": "Une Lune plus fine que cela ne gâche pas la fenêtre de ciel noir."
+        "fr": "Une Lune plus fine que cela ne gâche pas la fenêtre de ciel noir.",
+        "de": "Ein schmalerer Mond stört das dunkle Fenster nicht.",
+        "es": "Una Luna más fina que esto no estropea la ventana de cielo oscuro."
       },
       "required": false,
       "default": 30,
@@ -189,11 +253,15 @@
       "type": "number",
       "label": {
         "en": "Bortle class of your sky (0 = ignore)",
-        "fr": "Classe de Bortle de votre ciel (0 = ignorer)"
+        "fr": "Classe de Bortle de votre ciel (0 = ignorer)",
+        "de": "Bortle-Klasse deines Himmels (0 = ignorieren)",
+        "es": "Clase de Bortle de su cielo (0 = ignorar)"
       },
       "description": {
         "en": "Light pollution, 1 (pristine) to 9 (city center); lowers the sky quality score accordingly.",
-        "fr": "Pollution lumineuse, 1 (ciel pur) à 9 (centre-ville) ; abaisse d'autant le score de qualité du ciel."
+        "fr": "Pollution lumineuse, 1 (ciel pur) à 9 (centre-ville) ; abaisse d'autant le score de qualité du ciel.",
+        "de": "Lichtverschmutzung, 1 (unberührt) bis 9 (Innenstadt); senkt die Himmelsqualität entsprechend.",
+        "es": "Contaminación lumínica, de 1 (cielo prístino) a 9 (centro urbano); reduce en consecuencia la puntuación de calidad del cielo."
       },
       "required": false,
       "default": 0,
@@ -205,11 +273,15 @@
       "type": "boolean",
       "label": {
         "en": "Aurora forecast (NOAA)",
-        "fr": "Prévision d'aurores (NOAA)"
+        "fr": "Prévision d'aurores (NOAA)",
+        "de": "Polarlichtvorhersage (NOAA)",
+        "es": "Previsión de auroras (NOAA)"
       },
       "description": {
         "en": "Publishes the Aurora device from the NOAA planetary Kp index, refreshed every 30 minutes. Turn off to keep the integration fully offline.",
-        "fr": "Publie l'appareil Aurores à partir de l'indice Kp planétaire de la NOAA, rafraîchi toutes les 30 minutes. Désactivez pour une intégration entièrement hors ligne."
+        "fr": "Publie l'appareil Aurores à partir de l'indice Kp planétaire de la NOAA, rafraîchi toutes les 30 minutes. Désactivez pour une intégration entièrement hors ligne.",
+        "de": "Veröffentlicht das Gerät Polarlichter anhand des planetaren Kp-Index der NOAA, alle 30 Minuten aktualisiert. Schalte es aus, damit die Integration vollständig offline bleibt.",
+        "es": "Publica el dispositivo Auroras a partir del índice Kp planetario de la NOAA, actualizado cada 30 minutos. Desactívelo para que la integración funcione totalmente sin conexión."
       },
       "required": false,
       "default": true
@@ -219,11 +291,15 @@
       "type": "number",
       "label": {
         "en": "Aurora alert from Kp",
-        "fr": "Alerte aurores à partir de Kp"
+        "fr": "Alerte aurores à partir de Kp",
+        "de": "Polarlichtalarm ab Kp",
+        "es": "Alerta de auroras a partir de Kp"
       },
       "description": {
         "en": "Kp 5 is a minor storm (aurora possible around 55° of latitude), Kp 7 reaches central France.",
-        "fr": "Kp 5 est un orage mineur (aurores possibles vers 55° de latitude), Kp 7 atteint le centre de la France."
+        "fr": "Kp 5 est un orage mineur (aurores possibles vers 55° de latitude), Kp 7 atteint le centre de la France.",
+        "de": "Kp 5 ist ein schwacher Sturm (Polarlichter um 55° Breite möglich), Kp 7 reicht bis nach Mitteleuropa.",
+        "es": "Kp 5 es una tormenta menor (auroras posibles hacia los 55° de latitud), Kp 7 llega al centro de Francia."
       },
       "required": false,
       "default": 5,
@@ -235,11 +311,15 @@
       "type": "section",
       "label": {
         "en": "Location override",
-        "fr": "Localisation manuelle"
+        "fr": "Localisation manuelle",
+        "de": "Manueller Standort",
+        "es": "Ubicación manual"
       },
       "description": {
         "en": "Leave empty to use the coordinates of the first located Gladys house. Fill both fields to observe from somewhere else.",
-        "fr": "Laissez vide pour utiliser les coordonnées de la première maison Gladys localisée. Remplissez les deux champs pour observer depuis un autre lieu."
+        "fr": "Laissez vide pour utiliser les coordonnées de la première maison Gladys localisée. Remplissez les deux champs pour observer depuis un autre lieu.",
+        "de": "Leer lassen, um die Koordinaten des ersten Gladys-Zuhauses mit Standort zu verwenden. Fülle beide Felder aus, um von einem anderen Ort zu beobachten.",
+        "es": "Déjelo vacío para usar las coordenadas de la primera vivienda de Gladys con ubicación. Rellene ambos campos para observar desde otro lugar."
       }
     },
     {
@@ -247,16 +327,22 @@
       "type": "string",
       "label": {
         "en": "Latitude (°)",
-        "fr": "Latitude (°)"
+        "fr": "Latitude (°)",
+        "de": "Breitengrad (°)",
+        "es": "Latitud (°)"
       },
       "description": {
         "en": "Decimal degrees, north positive, e.g. 48.8566.",
-        "fr": "Degrés décimaux, nord positif, par exemple 48,8566."
+        "fr": "Degrés décimaux, nord positif, par exemple 48,8566.",
+        "de": "Dezimalgrad, Norden positiv, z. B. 48,8566.",
+        "es": "Grados decimales, norte positivo, por ejemplo 48,8566."
       },
       "required": false,
       "placeholder": {
         "en": "48.8566",
-        "fr": "48,8566"
+        "fr": "48,8566",
+        "de": "48,8566",
+        "es": "48,8566"
       }
     },
     {
@@ -264,16 +350,22 @@
       "type": "string",
       "label": {
         "en": "Longitude (°)",
-        "fr": "Longitude (°)"
+        "fr": "Longitude (°)",
+        "de": "Längengrad (°)",
+        "es": "Longitud (°)"
       },
       "description": {
         "en": "Decimal degrees, east positive, e.g. 2.3522.",
-        "fr": "Degrés décimaux, est positif, par exemple 2,3522."
+        "fr": "Degrés décimaux, est positif, par exemple 2,3522.",
+        "de": "Dezimalgrad, Osten positiv, z. B. 2,3522.",
+        "es": "Grados decimales, este positivo, por ejemplo 2,3522."
       },
       "required": false,
       "placeholder": {
         "en": "2.3522",
-        "fr": "2,3522"
+        "fr": "2,3522",
+        "de": "2,3522",
+        "es": "2,3522"
       }
     },
     {
@@ -281,7 +373,9 @@
       "type": "number",
       "label": {
         "en": "Elevation (m)",
-        "fr": "Altitude (m)"
+        "fr": "Altitude (m)",
+        "de": "Höhe (m)",
+        "es": "Altitud (m)"
       },
       "required": false,
       "default": 0,
@@ -294,7 +388,9 @@
       "key": "recompute_now",
       "label": {
         "en": "Recompute now",
-        "fr": "Recalculer maintenant"
+        "fr": "Recalculer maintenant",
+        "de": "Jetzt neu berechnen",
+        "es": "Recalcular ahora"
       },
       "timeout_seconds": 60
     },
@@ -302,7 +398,9 @@
       "key": "test_noaa",
       "label": {
         "en": "Test the NOAA service",
-        "fr": "Tester le service NOAA"
+        "fr": "Tester le service NOAA",
+        "de": "NOAA-Dienst testen",
+        "es": "Probar el servicio de la NOAA"
       },
       "timeout_seconds": 30
     }
@@ -312,11 +410,15 @@
       "key": "astro_tonight",
       "label": {
         "en": "Tonight's sky",
-        "fr": "Cette nuit"
+        "fr": "Cette nuit",
+        "de": "Himmel heute Nacht",
+        "es": "El cielo esta noche"
       },
       "description": {
         "en": "Sky quality through the night, moonless window and visible planets.",
-        "fr": "Qualité du ciel sur la nuit, fenêtre sans Lune et planètes visibles."
+        "fr": "Qualité du ciel sur la nuit, fenêtre sans Lune et planètes visibles.",
+        "de": "Himmelsqualität im Lauf der Nacht, mondloses Fenster und sichtbare Planeten.",
+        "es": "Calidad del cielo a lo largo de la noche, ventana sin Luna y planetas visibles."
       },
       "icon": "moon"
     },
@@ -324,11 +426,15 @@
       "key": "astro_agenda",
       "label": {
         "en": "Sky agenda",
-        "fr": "Agenda du ciel"
+        "fr": "Agenda du ciel",
+        "de": "Himmelskalender",
+        "es": "Agenda del cielo"
       },
       "description": {
         "en": "The next eclipses, meteor peaks, conjunctions and seasons.",
-        "fr": "Prochaines éclipses, étoiles filantes, conjonctions et saisons."
+        "fr": "Prochaines éclipses, étoiles filantes, conjonctions et saisons.",
+        "de": "Die nächsten Finsternisse, Sternschnuppen-Maxima, Konjunktionen und Jahreszeiten.",
+        "es": "Próximos eclipses, máximos de estrellas fugaces, conjunciones y estaciones."
       },
       "icon": "calendar",
       "settings": [
@@ -337,11 +443,15 @@
           "type": "multi_select",
           "label": {
             "en": "Events to show",
-            "fr": "Événements à afficher"
+            "fr": "Événements à afficher",
+            "de": "Angezeigte Ereignisse",
+            "es": "Eventos que mostrar"
           },
           "description": {
             "en": "Leave empty to show everything.",
-            "fr": "Laissez vide pour tout afficher."
+            "fr": "Laissez vide pour tout afficher.",
+            "de": "Leer lassen, um alles anzuzeigen.",
+            "es": "Déjelo vacío para mostrarlo todo."
           },
           "required": false,
           "options": [
@@ -349,42 +459,54 @@
               "value": "eclipses",
               "label": {
                 "en": "Eclipses",
-                "fr": "Éclipses"
+                "fr": "Éclipses",
+                "de": "Finsternisse",
+                "es": "Eclipses"
               }
             },
             {
               "value": "meteors",
               "label": {
                 "en": "Meteor showers",
-                "fr": "Étoiles filantes"
+                "fr": "Étoiles filantes",
+                "de": "Sternschnuppen",
+                "es": "Estrellas fugaces"
               }
             },
             {
               "value": "conjunctions",
               "label": {
                 "en": "Conjunctions",
-                "fr": "Conjonctions"
+                "fr": "Conjonctions",
+                "de": "Konjunktionen",
+                "es": "Conjunciones"
               }
             },
             {
               "value": "planets",
               "label": {
                 "en": "Oppositions and elongations",
-                "fr": "Oppositions et élongations"
+                "fr": "Oppositions et élongations",
+                "de": "Oppositionen und Elongationen",
+                "es": "Oposiciones y elongaciones"
               }
             },
             {
               "value": "seasons",
               "label": {
                 "en": "Seasons and orbit",
-                "fr": "Saisons et orbite"
+                "fr": "Saisons et orbite",
+                "de": "Jahreszeiten und Umlaufbahn",
+                "es": "Estaciones y órbita"
               }
             },
             {
               "value": "transits",
               "label": {
                 "en": "Transits",
-                "fr": "Transits"
+                "fr": "Transits",
+                "de": "Transite",
+                "es": "Tránsitos"
               }
             }
           ]
@@ -394,7 +516,9 @@
           "type": "select",
           "label": {
             "en": "Period",
-            "fr": "Période"
+            "fr": "Période",
+            "de": "Zeitraum",
+            "es": "Periodo"
           },
           "required": false,
           "default": "90",
@@ -403,21 +527,27 @@
               "value": "30",
               "label": {
                 "en": "30 days",
-                "fr": "30 jours"
+                "fr": "30 jours",
+                "de": "30 Tage",
+                "es": "30 días"
               }
             },
             {
               "value": "90",
               "label": {
                 "en": "3 months",
-                "fr": "3 mois"
+                "fr": "3 mois",
+                "de": "3 Monate",
+                "es": "3 meses"
               }
             },
             {
               "value": "365",
               "label": {
                 "en": "1 year",
-                "fr": "1 an"
+                "fr": "1 an",
+                "de": "1 Jahr",
+                "es": "1 año"
               }
             }
           ]
@@ -428,11 +558,15 @@
       "key": "astro_aurora",
       "label": {
         "en": "Aurora",
-        "fr": "Aurores"
+        "fr": "Aurores",
+        "de": "Polarlichter",
+        "es": "Auroras"
       },
       "description": {
         "en": "NOAA Kp index, observed and forecast, with the alert level.",
-        "fr": "Indice Kp de la NOAA, observé et prévu, avec le niveau d'alerte."
+        "fr": "Indice Kp de la NOAA, observé et prévu, avec le niveau d'alerte.",
+        "de": "Kp-Index der NOAA, gemessen und vorhergesagt, mit der Alarmstufe.",
+        "es": "Índice Kp de la NOAA, observado y previsto, con el nivel de alerta."
       },
       "icon": "activity"
     },
@@ -440,11 +574,15 @@
       "key": "astro_eclipse",
       "label": {
         "en": "Next eclipse",
-        "fr": "Prochaine éclipse"
+        "fr": "Prochaine éclipse",
+        "de": "Nächste Finsternis",
+        "es": "Próximo eclipse"
       },
       "description": {
         "en": "Countdown and phases of the next eclipse visible from home.",
-        "fr": "Compte à rebours et phases de la prochaine éclipse visible de chez vous."
+        "fr": "Compte à rebours et phases de la prochaine éclipse visible de chez vous.",
+        "de": "Countdown und Phasen der nächsten von zu Hause sichtbaren Finsternis.",
+        "es": "Cuenta atrás y fases del próximo eclipse visible desde su hogar."
       },
       "icon": "sun",
       "settings": [
@@ -453,7 +591,9 @@
           "type": "select",
           "label": {
             "en": "Eclipse",
-            "fr": "Éclipse"
+            "fr": "Éclipse",
+            "de": "Finsternis",
+            "es": "Eclipse"
           },
           "required": false,
           "default": "any",
@@ -462,21 +602,27 @@
               "value": "any",
               "label": {
                 "en": "The next one",
-                "fr": "La prochaine"
+                "fr": "La prochaine",
+                "de": "Die nächste",
+                "es": "El próximo"
               }
             },
             {
               "value": "solar",
               "label": {
                 "en": "Solar",
-                "fr": "Solaire"
+                "fr": "Solaire",
+                "de": "Sonnenfinsternis",
+                "es": "Solar"
               }
             },
             {
               "value": "lunar",
               "label": {
                 "en": "Lunar",
-                "fr": "Lunaire"
+                "fr": "Lunaire",
+                "de": "Mondfinsternis",
+                "es": "Lunar"
               }
             }
           ]
@@ -489,11 +635,15 @@
       "key": "eclipse_phase",
       "label": {
         "en": "Eclipse begins or peaks",
-        "fr": "Début ou maximum d'éclipse"
+        "fr": "Début ou maximum d'éclipse",
+        "de": "Finsternis beginnt oder erreicht Maximum",
+        "es": "Inicio o máximo de un eclipse"
       },
       "description": {
         "en": "An eclipse visible from home starts, or reaches its maximum.",
-        "fr": "Une éclipse visible de chez vous commence, ou atteint son maximum."
+        "fr": "Une éclipse visible de chez vous commence, ou atteint son maximum.",
+        "de": "Eine von zu Hause sichtbare Finsternis beginnt oder erreicht ihr Maximum.",
+        "es": "Un eclipse visible desde su hogar comienza o alcanza su máximo."
       },
       "fields": [
         {
@@ -501,7 +651,9 @@
           "type": "multi_select",
           "label": {
             "en": "Eclipse of",
-            "fr": "Éclipse de"
+            "fr": "Éclipse de",
+            "de": "Finsternis von",
+            "es": "Eclipse de"
           },
           "required": false,
           "options": [
@@ -509,14 +661,18 @@
               "value": "sun",
               "label": {
                 "en": "the Sun",
-                "fr": "Soleil"
+                "fr": "Soleil",
+                "de": "Sonne",
+                "es": "Sol"
               }
             },
             {
               "value": "moon",
               "label": {
                 "en": "the Moon",
-                "fr": "Lune"
+                "fr": "Lune",
+                "de": "Mond",
+                "es": "Luna"
               }
             }
           ]
@@ -526,7 +682,9 @@
           "type": "select",
           "label": {
             "en": "Moment",
-            "fr": "Moment"
+            "fr": "Moment",
+            "de": "Zeitpunkt",
+            "es": "Momento"
           },
           "required": false,
           "options": [
@@ -534,14 +692,18 @@
               "value": "begin",
               "label": {
                 "en": "Beginning",
-                "fr": "Début"
+                "fr": "Début",
+                "de": "Beginn",
+                "es": "Inicio"
               }
             },
             {
               "value": "peak",
               "label": {
                 "en": "Maximum",
-                "fr": "Maximum"
+                "fr": "Maximum",
+                "de": "Maximum",
+                "es": "Máximo"
               }
             }
           ]
@@ -553,7 +715,9 @@
           "type": "string",
           "label": {
             "en": "Sun or Moon",
-            "fr": "Soleil ou Lune"
+            "fr": "Soleil ou Lune",
+            "de": "Sonne oder Mond",
+            "es": "Sol o Luna"
           }
         },
         {
@@ -561,7 +725,9 @@
           "type": "string",
           "label": {
             "en": "Kind",
-            "fr": "Type"
+            "fr": "Type",
+            "de": "Art",
+            "es": "Tipo"
           }
         },
         {
@@ -569,7 +735,9 @@
           "type": "string",
           "label": {
             "en": "Moment",
-            "fr": "Moment"
+            "fr": "Moment",
+            "de": "Zeitpunkt",
+            "es": "Momento"
           }
         },
         {
@@ -577,7 +745,9 @@
           "type": "number",
           "label": {
             "en": "Obscuration (%)",
-            "fr": "Obscuration (%)"
+            "fr": "Obscuration (%)",
+            "de": "Bedeckung (%)",
+            "es": "Oscurecimiento (%)"
           }
         },
         {
@@ -585,7 +755,9 @@
           "type": "string",
           "label": {
             "en": "Maximum time",
-            "fr": "Heure du maximum"
+            "fr": "Heure du maximum",
+            "de": "Uhrzeit des Maximums",
+            "es": "Hora del máximo"
           }
         },
         {
@@ -593,7 +765,9 @@
           "type": "string",
           "label": {
             "en": "End time",
-            "fr": "Heure de fin"
+            "fr": "Heure de fin",
+            "de": "Uhrzeit des Endes",
+            "es": "Hora de fin"
           }
         },
         {
@@ -601,7 +775,9 @@
           "type": "string",
           "label": {
             "en": "Description",
-            "fr": "Description"
+            "fr": "Description",
+            "de": "Beschreibung",
+            "es": "Descripción"
           }
         }
       ]
@@ -610,11 +786,15 @@
       "key": "dark_window_starting",
       "label": {
         "en": "Moonless dark sky begins",
-        "fr": "Début du ciel noir sans Lune"
+        "fr": "Début du ciel noir sans Lune",
+        "de": "Dunkler Himmel ohne Mond beginnt",
+        "es": "Comienza el cielo oscuro sin Luna"
       },
       "description": {
         "en": "The darkest, moonless part of the night starts.",
-        "fr": "La partie la plus noire de la nuit, sans Lune, commence."
+        "fr": "La partie la plus noire de la nuit, sans Lune, commence.",
+        "de": "Der dunkelste, mondlose Teil der Nacht beginnt.",
+        "es": "Comienza la parte más oscura de la noche, sin Luna."
       },
       "variables": [
         {
@@ -622,7 +802,9 @@
           "type": "number",
           "label": {
             "en": "Duration (min)",
-            "fr": "Durée (min)"
+            "fr": "Durée (min)",
+            "de": "Dauer (min)",
+            "es": "Duración (min)"
           }
         },
         {
@@ -630,7 +812,9 @@
           "type": "string",
           "label": {
             "en": "End time",
-            "fr": "Heure de fin"
+            "fr": "Heure de fin",
+            "de": "Uhrzeit des Endes",
+            "es": "Hora de fin"
           }
         },
         {
@@ -638,7 +822,9 @@
           "type": "number",
           "label": {
             "en": "Best sky score",
-            "fr": "Meilleur score du ciel"
+            "fr": "Meilleur score du ciel",
+            "de": "Beste Himmelsqualität",
+            "es": "Mejor puntuación del cielo"
           }
         },
         {
@@ -646,7 +832,9 @@
           "type": "string",
           "label": {
             "en": "Night summary",
-            "fr": "Résumé de la nuit"
+            "fr": "Résumé de la nuit",
+            "de": "Zusammenfassung der Nacht",
+            "es": "Resumen de la noche"
           }
         }
       ]
@@ -655,11 +843,15 @@
       "key": "meteor_peak_night",
       "label": {
         "en": "Meteor shower peak tonight",
-        "fr": "Pic d'étoiles filantes ce soir"
+        "fr": "Pic d'étoiles filantes ce soir",
+        "de": "Sternschnuppen-Maximum heute Nacht",
+        "es": "Máximo de estrellas fugaces esta noche"
       },
       "description": {
         "en": "At dusk on the night of a meteor shower peak.",
-        "fr": "Au crépuscule de la nuit d'un pic d'étoiles filantes."
+        "fr": "Au crépuscule de la nuit d'un pic d'étoiles filantes.",
+        "de": "In der Abenddämmerung der Nacht eines Sternschnuppen-Maximums.",
+        "es": "Al anochecer de la noche de un máximo de estrellas fugaces."
       },
       "fields": [
         {
@@ -667,7 +859,9 @@
           "type": "multi_select",
           "label": {
             "en": "Shower",
-            "fr": "Pluie"
+            "fr": "Pluie",
+            "de": "Strom",
+            "es": "Lluvia"
           },
           "required": false,
           "options": [
@@ -675,91 +869,117 @@
               "value": "QUA",
               "label": {
                 "en": "Quadrantids",
-                "fr": "Quadrantides"
+                "fr": "Quadrantides",
+                "de": "Quadrantiden",
+                "es": "Cuadrántidas"
               }
             },
             {
               "value": "LYR",
               "label": {
                 "en": "Lyrids",
-                "fr": "Lyrides"
+                "fr": "Lyrides",
+                "de": "Lyriden",
+                "es": "Líridas"
               }
             },
             {
               "value": "ETA",
               "label": {
                 "en": "Eta Aquariids",
-                "fr": "Êta Aquarides"
+                "fr": "Êta Aquarides",
+                "de": "Eta-Aquariiden",
+                "es": "Eta Acuáridas"
               }
             },
             {
               "value": "SDA",
               "label": {
                 "en": "Southern Delta Aquariids",
-                "fr": "Delta Aquarides Sud"
+                "fr": "Delta Aquarides Sud",
+                "de": "Südliche Delta-Aquariiden",
+                "es": "Delta Acuáridas del Sur"
               }
             },
             {
               "value": "CAP",
               "label": {
                 "en": "Alpha Capricornids",
-                "fr": "Alpha Capricornides"
+                "fr": "Alpha Capricornides",
+                "de": "Alpha-Capricorniden",
+                "es": "Alfa Capricórnidas"
               }
             },
             {
               "value": "PER",
               "label": {
                 "en": "Perseids",
-                "fr": "Perséides"
+                "fr": "Perséides",
+                "de": "Perseiden",
+                "es": "Perseidas"
               }
             },
             {
               "value": "DRA",
               "label": {
                 "en": "Draconids",
-                "fr": "Draconides"
+                "fr": "Draconides",
+                "de": "Draconiden",
+                "es": "Dracónidas"
               }
             },
             {
               "value": "ORI",
               "label": {
                 "en": "Orionids",
-                "fr": "Orionides"
+                "fr": "Orionides",
+                "de": "Orioniden",
+                "es": "Oriónidas"
               }
             },
             {
               "value": "STA",
               "label": {
                 "en": "Southern Taurids",
-                "fr": "Taurides Sud"
+                "fr": "Taurides Sud",
+                "de": "Südliche Tauriden",
+                "es": "Táuridas del Sur"
               }
             },
             {
               "value": "NTA",
               "label": {
                 "en": "Northern Taurids",
-                "fr": "Taurides Nord"
+                "fr": "Taurides Nord",
+                "de": "Nördliche Tauriden",
+                "es": "Táuridas del Norte"
               }
             },
             {
               "value": "LEO",
               "label": {
                 "en": "Leonids",
-                "fr": "Léonides"
+                "fr": "Léonides",
+                "de": "Leoniden",
+                "es": "Leónidas"
               }
             },
             {
               "value": "GEM",
               "label": {
                 "en": "Geminids",
-                "fr": "Géminides"
+                "fr": "Géminides",
+                "de": "Geminiden",
+                "es": "Gemínidas"
               }
             },
             {
               "value": "URS",
               "label": {
                 "en": "Ursids",
-                "fr": "Ursides"
+                "fr": "Ursides",
+                "de": "Ursiden",
+                "es": "Úrsidas"
               }
             }
           ]
@@ -771,7 +991,9 @@
           "type": "string",
           "label": {
             "en": "Shower code",
-            "fr": "Code de la pluie"
+            "fr": "Code de la pluie",
+            "de": "Code des Stroms",
+            "es": "Código de la lluvia"
           }
         },
         {
@@ -779,7 +1001,9 @@
           "type": "string",
           "label": {
             "en": "Shower",
-            "fr": "Pluie"
+            "fr": "Pluie",
+            "de": "Strom",
+            "es": "Lluvia"
           }
         },
         {
@@ -787,7 +1011,9 @@
           "type": "number",
           "label": {
             "en": "ZHR",
-            "fr": "ZHR"
+            "fr": "ZHR",
+            "de": "ZHR",
+            "es": "THZ"
           }
         },
         {
@@ -795,7 +1021,9 @@
           "type": "string",
           "label": {
             "en": "Peak time",
-            "fr": "Heure du pic"
+            "fr": "Heure du pic",
+            "de": "Uhrzeit des Maximums",
+            "es": "Hora del máximo"
           }
         },
         {
@@ -803,7 +1031,9 @@
           "type": "number",
           "label": {
             "en": "Moon illumination (%)",
-            "fr": "Illumination de la Lune (%)"
+            "fr": "Illumination de la Lune (%)",
+            "de": "Mondbeleuchtung (%)",
+            "es": "Iluminación de la Luna (%)"
           }
         },
         {
@@ -811,7 +1041,9 @@
           "type": "string",
           "label": {
             "en": "Description",
-            "fr": "Description"
+            "fr": "Description",
+            "de": "Beschreibung",
+            "es": "Descripción"
           }
         }
       ]
@@ -820,11 +1052,15 @@
       "key": "conjunction_tonight",
       "label": {
         "en": "Visible conjunction tonight",
-        "fr": "Conjonction visible ce soir"
+        "fr": "Conjonction visible ce soir",
+        "de": "Sichtbare Konjunktion heute Nacht",
+        "es": "Conjunción visible esta noche"
       },
       "description": {
         "en": "At dusk on the night of a close approach you can see.",
-        "fr": "Au crépuscule de la nuit d'un rapprochement observable."
+        "fr": "Au crépuscule de la nuit d'un rapprochement observable.",
+        "de": "In der Abenddämmerung der Nacht einer sichtbaren Begegnung.",
+        "es": "Al anochecer de la noche de un acercamiento observable."
       },
       "fields": [
         {
@@ -832,7 +1068,9 @@
           "type": "select",
           "label": {
             "en": "With the Moon",
-            "fr": "Avec la Lune"
+            "fr": "Avec la Lune",
+            "de": "Mit dem Mond",
+            "es": "Con la Luna"
           },
           "required": false,
           "options": [
@@ -840,14 +1078,18 @@
               "value": "yes",
               "label": {
                 "en": "Yes",
-                "fr": "Oui"
+                "fr": "Oui",
+                "de": "Ja",
+                "es": "Sí"
               }
             },
             {
               "value": "no",
               "label": {
                 "en": "No, planets only",
-                "fr": "Non, planètes seules"
+                "fr": "Non, planètes seules",
+                "de": "Nein, nur Planeten",
+                "es": "No, solo planetas"
               }
             }
           ]
@@ -859,7 +1101,9 @@
           "type": "string",
           "label": {
             "en": "Bodies",
-            "fr": "Astres"
+            "fr": "Astres",
+            "de": "Himmelskörper",
+            "es": "Astros"
           }
         },
         {
@@ -867,7 +1111,9 @@
           "type": "number",
           "label": {
             "en": "Separation (°)",
-            "fr": "Séparation (°)"
+            "fr": "Séparation (°)",
+            "de": "Abstand (°)",
+            "es": "Separación (°)"
           }
         },
         {
@@ -875,7 +1121,9 @@
           "type": "string",
           "label": {
             "en": "Closest approach",
-            "fr": "Rapprochement maximal"
+            "fr": "Rapprochement maximal",
+            "de": "Größte Annäherung",
+            "es": "Máximo acercamiento"
           }
         },
         {
@@ -883,7 +1131,9 @@
           "type": "string",
           "label": {
             "en": "Description",
-            "fr": "Description"
+            "fr": "Description",
+            "de": "Beschreibung",
+            "es": "Descripción"
           }
         }
       ]
@@ -892,11 +1142,15 @@
       "key": "aurora_alert",
       "label": {
         "en": "Aurora alert rises",
-        "fr": "Alerte aurores en hausse"
+        "fr": "Alerte aurores en hausse",
+        "de": "Polarlichtalarm steigt",
+        "es": "Sube la alerta de auroras"
       },
       "description": {
         "en": "The NOAA Kp alert level goes up (active, storm, strong storm).",
-        "fr": "Le niveau d'alerte Kp de la NOAA monte (actif, orage, orage fort)."
+        "fr": "Le niveau d'alerte Kp de la NOAA monte (actif, orage, orage fort).",
+        "de": "Die Kp-Alarmstufe der NOAA steigt (aktiv, Sturm, starker Sturm).",
+        "es": "El nivel de alerta Kp de la NOAA sube (activo, tormenta, tormenta fuerte)."
       },
       "fields": [
         {
@@ -904,7 +1158,9 @@
           "type": "select",
           "label": {
             "en": "Level reached",
-            "fr": "Niveau atteint"
+            "fr": "Niveau atteint",
+            "de": "Erreichte Stufe",
+            "es": "Nivel alcanzado"
           },
           "required": false,
           "options": [
@@ -912,21 +1168,27 @@
               "value": "1",
               "label": {
                 "en": "Active (Kp 4-5)",
-                "fr": "Actif (Kp 4-5)"
+                "fr": "Actif (Kp 4-5)",
+                "de": "Aktiv (Kp 4-5)",
+                "es": "Activo (Kp 4-5)"
               }
             },
             {
               "value": "2",
               "label": {
                 "en": "Storm (Kp 5-7)",
-                "fr": "Orage (Kp 5-7)"
+                "fr": "Orage (Kp 5-7)",
+                "de": "Sturm (Kp 5-7)",
+                "es": "Tormenta (Kp 5-7)"
               }
             },
             {
               "value": "3",
               "label": {
                 "en": "Strong storm (Kp 7+)",
-                "fr": "Orage fort (Kp 7+)"
+                "fr": "Orage fort (Kp 7+)",
+                "de": "Starker Sturm (Kp 7+)",
+                "es": "Tormenta fuerte (Kp 7+)"
               }
             }
           ]
@@ -938,7 +1200,9 @@
           "type": "number",
           "label": {
             "en": "Alert level",
-            "fr": "Niveau d'alerte"
+            "fr": "Niveau d'alerte",
+            "de": "Alarmstufe",
+            "es": "Nivel de alerta"
           }
         },
         {
@@ -946,7 +1210,9 @@
           "type": "number",
           "label": {
             "en": "Current Kp",
-            "fr": "Kp actuel"
+            "fr": "Kp actuel",
+            "de": "Aktueller Kp",
+            "es": "Kp actual"
           }
         },
         {
@@ -954,7 +1220,9 @@
           "type": "number",
           "label": {
             "en": "Kp max 24 h",
-            "fr": "Kp max 24 h"
+            "fr": "Kp max 24 h",
+            "de": "Kp max. 24 h",
+            "es": "Kp máx. 24 h"
           }
         },
         {
@@ -962,7 +1230,9 @@
           "type": "string",
           "label": {
             "en": "Next alert period",
-            "fr": "Prochaine période d'alerte"
+            "fr": "Prochaine période d'alerte",
+            "de": "Nächster Alarmzeitraum",
+            "es": "Próximo periodo de alerta"
           }
         },
         {
@@ -970,7 +1240,9 @@
           "type": "string",
           "label": {
             "en": "Description",
-            "fr": "Description"
+            "fr": "Description",
+            "de": "Beschreibung",
+            "es": "Descripción"
           }
         }
       ]
@@ -979,11 +1251,15 @@
       "key": "season_starting",
       "label": {
         "en": "Season begins",
-        "fr": "Début d'une saison"
+        "fr": "Début d'une saison",
+        "de": "Jahreszeit beginnt",
+        "es": "Comienza una estación"
       },
       "description": {
         "en": "At the exact instant of an equinox or a solstice.",
-        "fr": "À l'instant exact d'un équinoxe ou d'un solstice."
+        "fr": "À l'instant exact d'un équinoxe ou d'un solstice.",
+        "de": "Im genauen Moment einer Tagundnachtgleiche oder einer Sonnenwende.",
+        "es": "En el instante exacto de un equinoccio o un solsticio."
       },
       "fields": [
         {
@@ -991,7 +1267,9 @@
           "type": "multi_select",
           "label": {
             "en": "Season",
-            "fr": "Saison"
+            "fr": "Saison",
+            "de": "Jahreszeit",
+            "es": "Estación"
           },
           "required": false,
           "options": [
@@ -999,28 +1277,36 @@
               "value": "march-equinox",
               "label": {
                 "en": "March equinox",
-                "fr": "Équinoxe de printemps"
+                "fr": "Équinoxe de printemps",
+                "de": "Frühlings-Tagundnachtgleiche",
+                "es": "Equinoccio de marzo"
               }
             },
             {
               "value": "june-solstice",
               "label": {
                 "en": "June solstice",
-                "fr": "Solstice d'été"
+                "fr": "Solstice d'été",
+                "de": "Sommersonnenwende",
+                "es": "Solsticio de junio"
               }
             },
             {
               "value": "september-equinox",
               "label": {
                 "en": "September equinox",
-                "fr": "Équinoxe d'automne"
+                "fr": "Équinoxe d'automne",
+                "de": "Herbst-Tagundnachtgleiche",
+                "es": "Equinoccio de septiembre"
               }
             },
             {
               "value": "december-solstice",
               "label": {
                 "en": "December solstice",
-                "fr": "Solstice d'hiver"
+                "fr": "Solstice d'hiver",
+                "de": "Wintersonnenwende",
+                "es": "Solsticio de diciembre"
               }
             }
           ]
@@ -1032,7 +1318,9 @@
           "type": "string",
           "label": {
             "en": "Season code",
-            "fr": "Code de la saison"
+            "fr": "Code de la saison",
+            "de": "Code der Jahreszeit",
+            "es": "Código de la estación"
           }
         },
         {
@@ -1040,7 +1328,9 @@
           "type": "string",
           "label": {
             "en": "Season",
-            "fr": "Saison"
+            "fr": "Saison",
+            "de": "Jahreszeit",
+            "es": "Estación"
           }
         },
         {
@@ -1048,7 +1338,9 @@
           "type": "number",
           "label": {
             "en": "Day length (h)",
-            "fr": "Durée du jour (h)"
+            "fr": "Durée du jour (h)",
+            "de": "Tageslänge (h)",
+            "es": "Duración del día (h)"
           }
         }
       ]
@@ -1059,11 +1351,15 @@
       "key": "next_event",
       "label": {
         "en": "Next sky event",
-        "fr": "Prochain événement du ciel"
+        "fr": "Prochain événement du ciel",
+        "de": "Nächstes Himmelsereignis",
+        "es": "Próximo evento del cielo"
       },
       "description": {
         "en": "Finds the next eclipse, meteor peak, conjunction, opposition or season.",
-        "fr": "Trouve la prochaine éclipse, étoile filante, conjonction, opposition ou saison."
+        "fr": "Trouve la prochaine éclipse, étoile filante, conjonction, opposition ou saison.",
+        "de": "Findet die nächste Finsternis, das nächste Sternschnuppen-Maximum, die nächste Konjunktion, Opposition oder Jahreszeit.",
+        "es": "Busca el próximo eclipse, máximo de estrellas fugaces, conjunción, oposición o estación."
       },
       "timeout_seconds": 10,
       "fields": [
@@ -1072,7 +1368,9 @@
           "type": "select",
           "label": {
             "en": "Kind of event",
-            "fr": "Type d'événement"
+            "fr": "Type d'événement",
+            "de": "Art des Ereignisses",
+            "es": "Tipo de evento"
           },
           "required": false,
           "default": "any",
@@ -1081,49 +1379,63 @@
               "value": "any",
               "label": {
                 "en": "Any",
-                "fr": "Tous"
+                "fr": "Tous",
+                "de": "Alle",
+                "es": "Todos"
               }
             },
             {
               "value": "eclipses",
               "label": {
                 "en": "Eclipses",
-                "fr": "Éclipses"
+                "fr": "Éclipses",
+                "de": "Finsternisse",
+                "es": "Eclipses"
               }
             },
             {
               "value": "meteors",
               "label": {
                 "en": "Meteor showers",
-                "fr": "Étoiles filantes"
+                "fr": "Étoiles filantes",
+                "de": "Sternschnuppen",
+                "es": "Estrellas fugaces"
               }
             },
             {
               "value": "conjunctions",
               "label": {
                 "en": "Conjunctions",
-                "fr": "Conjonctions"
+                "fr": "Conjonctions",
+                "de": "Konjunktionen",
+                "es": "Conjunciones"
               }
             },
             {
               "value": "planets",
               "label": {
                 "en": "Oppositions and elongations",
-                "fr": "Oppositions et élongations"
+                "fr": "Oppositions et élongations",
+                "de": "Oppositionen und Elongationen",
+                "es": "Oposiciones y elongaciones"
               }
             },
             {
               "value": "seasons",
               "label": {
                 "en": "Seasons and orbit",
-                "fr": "Saisons et orbite"
+                "fr": "Saisons et orbite",
+                "de": "Jahreszeiten und Umlaufbahn",
+                "es": "Estaciones y órbita"
               }
             },
             {
               "value": "transits",
               "label": {
                 "en": "Transits",
-                "fr": "Transits"
+                "fr": "Transits",
+                "de": "Transite",
+                "es": "Tránsitos"
               }
             }
           ]
@@ -1133,7 +1445,9 @@
           "type": "select",
           "label": {
             "en": "Language of the texts",
-            "fr": "Langue des textes"
+            "fr": "Langue des textes",
+            "de": "Sprache der Texte",
+            "es": "Idioma de los textos"
           },
           "required": false,
           "default": "fr",
@@ -1142,14 +1456,36 @@
               "value": "fr",
               "label": {
                 "en": "French",
-                "fr": "Français"
+                "fr": "Français",
+                "de": "Französisch",
+                "es": "Francés"
               }
             },
             {
               "value": "en",
               "label": {
                 "en": "English",
-                "fr": "Anglais"
+                "fr": "Anglais",
+                "de": "Englisch",
+                "es": "Inglés"
+              }
+            },
+            {
+              "value": "de",
+              "label": {
+                "en": "German",
+                "fr": "Allemand",
+                "de": "Deutsch",
+                "es": "Alemán"
+              }
+            },
+            {
+              "value": "es",
+              "label": {
+                "en": "Spanish",
+                "fr": "Espagnol",
+                "de": "Spanisch",
+                "es": "Español"
               }
             }
           ]
@@ -1161,7 +1497,9 @@
           "type": "boolean",
           "label": {
             "en": "Found",
-            "fr": "Trouvé"
+            "fr": "Trouvé",
+            "de": "Gefunden",
+            "es": "Encontrado"
           }
         },
         {
@@ -1169,7 +1507,9 @@
           "type": "string",
           "label": {
             "en": "Category",
-            "fr": "Catégorie"
+            "fr": "Catégorie",
+            "de": "Kategorie",
+            "es": "Categoría"
           }
         },
         {
@@ -1177,7 +1517,9 @@
           "type": "string",
           "label": {
             "en": "Title",
-            "fr": "Titre"
+            "fr": "Titre",
+            "de": "Titel",
+            "es": "Título"
           }
         },
         {
@@ -1185,7 +1527,9 @@
           "type": "string",
           "label": {
             "en": "Time (ISO)",
-            "fr": "Heure (ISO)"
+            "fr": "Heure (ISO)",
+            "de": "Zeitpunkt (ISO)",
+            "es": "Hora (ISO)"
           }
         },
         {
@@ -1193,7 +1537,9 @@
           "type": "string",
           "label": {
             "en": "Local date and time",
-            "fr": "Date et heure locales"
+            "fr": "Date et heure locales",
+            "de": "Lokales Datum und Uhrzeit",
+            "es": "Fecha y hora locales"
           }
         },
         {
@@ -1201,7 +1547,9 @@
           "type": "number",
           "label": {
             "en": "Days until",
-            "fr": "Jours restants"
+            "fr": "Jours restants",
+            "de": "Tage bis dahin",
+            "es": "Días restantes"
           }
         },
         {
@@ -1209,7 +1557,9 @@
           "type": "number",
           "label": {
             "en": "Minutes until",
-            "fr": "Minutes restantes"
+            "fr": "Minutes restantes",
+            "de": "Minuten bis dahin",
+            "es": "Minutos restantes"
           }
         },
         {
@@ -1217,7 +1567,9 @@
           "type": "boolean",
           "label": {
             "en": "Visible from home",
-            "fr": "Visible de chez vous"
+            "fr": "Visible de chez vous",
+            "de": "Von zu Hause sichtbar",
+            "es": "Visible desde su hogar"
           }
         },
         {
@@ -1225,7 +1577,9 @@
           "type": "string",
           "label": {
             "en": "Description",
-            "fr": "Description"
+            "fr": "Description",
+            "de": "Beschreibung",
+            "es": "Descripción"
           }
         }
       ]
@@ -1234,11 +1588,15 @@
       "key": "tonight_summary",
       "label": {
         "en": "Tonight's sky summary",
-        "fr": "Résumé du ciel de cette nuit"
+        "fr": "Résumé du ciel de cette nuit",
+        "de": "Zusammenfassung des Himmels heute Nacht",
+        "es": "Resumen del cielo de esta noche"
       },
       "description": {
         "en": "Dark window, sky quality, planets and active shower of the coming night.",
-        "fr": "Fenêtre noire, qualité du ciel, planètes et pluie active de la nuit."
+        "fr": "Fenêtre noire, qualité du ciel, planètes et pluie active de la nuit.",
+        "de": "Dunkles Fenster, Himmelsqualität, Planeten und aktiver Strom der kommenden Nacht.",
+        "es": "Ventana oscura, calidad del cielo, planetas y lluvia activa de la próxima noche."
       },
       "timeout_seconds": 10,
       "fields": [
@@ -1247,7 +1605,9 @@
           "type": "select",
           "label": {
             "en": "Language of the texts",
-            "fr": "Langue des textes"
+            "fr": "Langue des textes",
+            "de": "Sprache der Texte",
+            "es": "Idioma de los textos"
           },
           "required": false,
           "default": "fr",
@@ -1256,14 +1616,36 @@
               "value": "fr",
               "label": {
                 "en": "French",
-                "fr": "Français"
+                "fr": "Français",
+                "de": "Französisch",
+                "es": "Francés"
               }
             },
             {
               "value": "en",
               "label": {
                 "en": "English",
-                "fr": "Anglais"
+                "fr": "Anglais",
+                "de": "Englisch",
+                "es": "Inglés"
+              }
+            },
+            {
+              "value": "de",
+              "label": {
+                "en": "German",
+                "fr": "Allemand",
+                "de": "Deutsch",
+                "es": "Alemán"
+              }
+            },
+            {
+              "value": "es",
+              "label": {
+                "en": "Spanish",
+                "fr": "Espagnol",
+                "de": "Spanisch",
+                "es": "Español"
               }
             }
           ]
@@ -1275,7 +1657,9 @@
           "type": "string",
           "label": {
             "en": "Summary",
-            "fr": "Résumé"
+            "fr": "Résumé",
+            "de": "Zusammenfassung",
+            "es": "Resumen"
           }
         },
         {
@@ -1283,7 +1667,9 @@
           "type": "number",
           "label": {
             "en": "Best sky score",
-            "fr": "Meilleur score du ciel"
+            "fr": "Meilleur score du ciel",
+            "de": "Beste Himmelsqualität",
+            "es": "Mejor puntuación del cielo"
           }
         },
         {
@@ -1291,7 +1677,9 @@
           "type": "number",
           "label": {
             "en": "Sky score now",
-            "fr": "Score du ciel maintenant"
+            "fr": "Score du ciel maintenant",
+            "de": "Himmelsqualität jetzt",
+            "es": "Puntuación del cielo ahora"
           }
         },
         {
@@ -1299,7 +1687,9 @@
           "type": "string",
           "label": {
             "en": "Moonless from",
-            "fr": "Sans Lune dès"
+            "fr": "Sans Lune dès",
+            "de": "Mondlos ab",
+            "es": "Sin Luna desde"
           }
         },
         {
@@ -1307,7 +1697,9 @@
           "type": "string",
           "label": {
             "en": "Moonless until",
-            "fr": "Sans Lune jusqu'à"
+            "fr": "Sans Lune jusqu'à",
+            "de": "Mondlos bis",
+            "es": "Sin Luna hasta"
           }
         },
         {
@@ -1315,7 +1707,9 @@
           "type": "number",
           "label": {
             "en": "Moonless minutes",
-            "fr": "Minutes sans Lune"
+            "fr": "Minutes sans Lune",
+            "de": "Mondlose Minuten",
+            "es": "Minutos sin Luna"
           }
         },
         {
@@ -1323,7 +1717,9 @@
           "type": "string",
           "label": {
             "en": "Visible planets",
-            "fr": "Planètes visibles"
+            "fr": "Planètes visibles",
+            "de": "Sichtbare Planeten",
+            "es": "Planetas visibles"
           }
         },
         {
@@ -1331,7 +1727,9 @@
           "type": "number",
           "label": {
             "en": "Moon illumination (%)",
-            "fr": "Illumination de la Lune (%)"
+            "fr": "Illumination de la Lune (%)",
+            "de": "Mondbeleuchtung (%)",
+            "es": "Iluminación de la Luna (%)"
           }
         },
         {
@@ -1339,7 +1737,9 @@
           "type": "string",
           "label": {
             "en": "Active shower",
-            "fr": "Pluie active"
+            "fr": "Pluie active",
+            "de": "Aktiver Strom",
+            "es": "Lluvia activa"
           }
         }
       ]

@@ -7,13 +7,14 @@
 
 import { buildAgenda, CATEGORIES } from './agenda.js';
 import { createFormatter } from './formatters.js';
+import { LANGUAGES } from './config.js';
 
 export const NO_LOCATION = 'astronomy: no location yet (locate the house in Gladys)';
 
 const DAY_MS = 24 * 3600 * 1000;
 
 function formatterFor(fields, config) {
-  const language = ['fr', 'en'].includes(fields?.language) ? fields.language : config.language;
+  const language = LANGUAGES.includes(fields?.language) ? fields.language : config.language;
   return createFormatter(language);
 }
 

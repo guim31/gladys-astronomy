@@ -4,7 +4,7 @@ import { PLATFORM_ID, UNITS, pick, text, duration, counter, angle, toStates } fr
 
 export const DEVICE_TYPE = 'astronomy-planets';
 
-const NAMES = {
+export const NAMES = {
   fr: {
     device: 'Planètes',
     visible: 'Planètes visibles cette nuit',
@@ -26,6 +26,28 @@ const NAMES = {
     separation: 'Separation (conjunction)',
     event: 'Next planetary event',
     eventDays: 'Event in',
+  },
+  de: {
+    device: 'Planeten',
+    visible: 'Heute Nacht sichtbare Planeten',
+    count: 'Anzahl sichtbarer Planeten',
+    brightest: 'Hellster Planet',
+    conjunction: 'Nächste Konjunktion',
+    conjunctionDays: 'Konjunktion in',
+    separation: 'Abstand (Konjunktion)',
+    event: 'Nächstes Planetenereignis',
+    eventDays: 'Ereignis in',
+  },
+  es: {
+    device: 'Planetas',
+    visible: 'Planetas visibles esta noche',
+    count: 'Número de planetas visibles',
+    brightest: 'Planeta más brillante',
+    conjunction: 'Próxima conjunción',
+    conjunctionDays: 'Conjunción en',
+    separation: 'Separación (conjunción)',
+    event: 'Próximo evento planetario',
+    eventDays: 'Evento en',
   },
 };
 

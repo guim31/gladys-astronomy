@@ -9,9 +9,9 @@
 
 export const NONE = '—';
 
-const LOCALES = { fr: 'fr-FR', en: 'en-GB' };
+const LOCALES = { fr: 'fr-FR', en: 'en-GB', de: 'de-DE', es: 'es-ES' };
 
-const T = {
+export const T = {
   fr: {
     solar: 'Solaire',
     lunar: 'Lunaire',
@@ -119,12 +119,134 @@ const T = {
     cache: 'cache',
     conjunctionSep: 'separation',
   },
+  de: {
+    solar: 'Sonnenfinsternis',
+    lunar: 'Mondfinsternis',
+    max: 'max.',
+    kind: {
+      partial: 'partiell',
+      annular: 'ringförmig',
+      total: 'total',
+      penumbral: 'Halbschatten',
+    },
+    body: {
+      sun: 'Sonne',
+      moon: 'Mond',
+      mercury: 'Merkur',
+      venus: 'Venus',
+      mars: 'Mars',
+      jupiter: 'Jupiter',
+      saturn: 'Saturn',
+    },
+    transit: 'Transit von',
+    visible: 'sichtbar',
+    notVisible: 'unter dem Horizont',
+    noPlanet: 'Kein Planet mit bloßem Auge',
+    evening: 'abends',
+    morning: 'morgens',
+    opposition: 'Opposition von',
+    elongation: 'Größte Elongation von',
+    noShower: 'Kein aktiver Strom',
+    zhr: 'ZHR',
+    peak: 'Maximum',
+    moon: 'Mond',
+    radiant: 'Radiant',
+    moonLevel: {
+      none: 'ohne Mond',
+      low: 'schwacher Mond',
+      medium: 'störender Mond',
+      high: 'Vollmond',
+    },
+    night: 'Nacht',
+    level: {
+      astronomical: '(astronomisch)',
+      nautical: '(nautisch)',
+      civil: '(bürgerlich)',
+      none: '(hell)',
+    },
+    moonless: 'mondlos',
+    noMoonless: 'kein mondloses Fenster',
+    score: 'Qualität',
+    noNight: 'Keine Nacht (Mitternachtssonne)',
+    season: {
+      'march-equinox': 'Frühlings-Tagundnachtgleiche',
+      'june-solstice': 'Sommersonnenwende',
+      'september-equinox': 'Herbst-Tagundnachtgleiche',
+      'december-solstice': 'Wintersonnenwende',
+    },
+    apsis: { perihelion: 'Perihel', aphelion: 'Aphel' },
+    mkm: 'Mio. km',
+    kpForecast: 'vorhergesagt',
+    noAlert: 'Kein Alarm in den nächsten 3 Tagen',
+    today: 'Heute',
+    tomorrow: 'Morgen',
+    dayAfter: 'Übermorgen',
+    unavailable: 'Nicht verfügbar',
+    cache: 'Cache',
+    conjunctionSep: 'Abstand',
+  },
+  es: {
+    solar: 'Eclipse solar',
+    lunar: 'Eclipse lunar',
+    max: 'máx.',
+    kind: { partial: 'parcial', annular: 'anular', total: 'total', penumbral: 'penumbral' },
+    body: {
+      sun: 'Sol',
+      moon: 'Luna',
+      mercury: 'Mercurio',
+      venus: 'Venus',
+      mars: 'Marte',
+      jupiter: 'Júpiter',
+      saturn: 'Saturno',
+    },
+    transit: 'Tránsito de',
+    visible: 'visible',
+    notVisible: 'bajo el horizonte',
+    noPlanet: 'Ningún planeta a simple vista',
+    evening: 'vespertina',
+    morning: 'matutina',
+    opposition: 'Oposición de',
+    elongation: 'Máxima elongación de',
+    noShower: 'Ninguna lluvia activa',
+    zhr: 'THZ',
+    peak: 'máximo',
+    moon: 'Luna',
+    radiant: 'radiante',
+    moonLevel: {
+      none: 'sin Luna',
+      low: 'Luna débil',
+      medium: 'Luna molesta',
+      high: 'Luna llena',
+    },
+    night: 'Noche',
+    level: { astronomical: 'astronómica', nautical: 'náutica', civil: 'civil', none: 'solar' },
+    moonless: 'sin Luna',
+    noMoonless: 'ninguna ventana sin Luna',
+    score: 'puntuación',
+    noNight: 'Sin noche (sol de medianoche)',
+    season: {
+      'march-equinox': 'Equinoccio de marzo',
+      'june-solstice': 'Solsticio de junio',
+      'september-equinox': 'Equinoccio de septiembre',
+      'december-solstice': 'Solsticio de diciembre',
+    },
+    apsis: { perihelion: 'Perihelio', aphelion: 'Afelio' },
+    mkm: 'M km',
+    kpForecast: 'previsto',
+    noAlert: 'Ninguna alerta en 3 días',
+    today: 'Hoy',
+    tomorrow: 'Mañana',
+    dayAfter: 'Pasado mañana',
+    unavailable: 'No disponible',
+    cache: 'caché',
+    conjunctionSep: 'separación',
+  },
 };
 
 /**
  * @param {string} language requested language (ISO 639-1)
  * @param {string} timeZone IANA zone, the container's TZ by default
- * @param {{ fallback?: 'fr'|'en' }} options language used when `language` is
+ * @param {{ fallback?: 'fr'|'en'|'de'|'es' }} options language used when `language` is
  *   not supported: French for the device texts (the config default), English
  *   for the widgets (Gladys' own fallback for a user language).
  */

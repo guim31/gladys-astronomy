@@ -3,7 +3,7 @@ import { PLATFORM_ID, pick, text, level, flag, risk, toStates } from './common.j
 
 export const DEVICE_TYPE = 'astronomy-aurora';
 
-const NAMES = {
+export const NAMES = {
   fr: {
     device: 'Aurores',
     kpNow: 'Indice Kp actuel',
@@ -25,6 +25,28 @@ const NAMES = {
     nextAlert: 'Next alert',
     forecast: 'Kp forecast',
     updated: 'Last NOAA update',
+  },
+  de: {
+    device: 'Polarlichter',
+    kpNow: 'Aktueller Kp-Index',
+    kpMax24: 'Kp max. nächste 24 h',
+    kpMax72: 'Kp max. nächste 72 h',
+    alertLevel: 'Polarlicht-Alarmstufe',
+    alertNow: 'Polarlichtalarm',
+    nextAlert: 'Nächster Alarm',
+    forecast: 'Kp-Vorhersage',
+    updated: 'Letzte NOAA-Aktualisierung',
+  },
+  es: {
+    device: 'Auroras',
+    kpNow: 'Índice Kp actual',
+    kpMax24: 'Kp máx. próximas 24 h',
+    kpMax72: 'Kp máx. próximas 72 h',
+    alertLevel: 'Nivel de alerta de auroras',
+    alertNow: 'Alerta de auroras',
+    nextAlert: 'Próxima alerta',
+    forecast: 'Previsión Kp',
+    updated: 'Última actualización NOAA',
   },
 };
 
@@ -97,6 +119,14 @@ export const aurora = {
                   : 'NOAA unreachable',
               fr:
                 a?.source === 'cache' ? 'NOAA injoignable, prévision en cache' : 'NOAA injoignable',
+              de:
+                a?.source === 'cache'
+                  ? 'NOAA nicht erreichbar, zwischengespeicherte Vorhersage'
+                  : 'NOAA nicht erreichbar',
+              es:
+                a?.source === 'cache'
+                  ? 'NOAA inaccesible, se muestra la previsión en caché'
+                  : 'NOAA inaccesible',
             },
           }
         : {}),

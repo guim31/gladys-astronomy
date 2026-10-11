@@ -9,6 +9,50 @@
 import { fetchKp, summarize } from './aurora/noaa.js';
 import { createFormatter } from './formatters.js';
 import { MESSAGES } from './scheduler.js';
+import { LANGUAGES } from './config.js';
+
+// Sentences around the formatted values, per language of the Gladys UI.
+export const TEXTS = {
+  fr: {
+    house: 'maison Gladys',
+    config: 'configuration',
+    recomputed: (where, source) => `Recalculé pour ${where} (${source}).`,
+    nextPeak: 'Prochain pic :',
+    noaa: (steps, f, s) =>
+      `NOAA joignable : ${steps} pas de 3 h. Kp actuel ${f.num(s.kpNow, 2)}, max 24 h ${f.num(s.kpMax24h, 2)}, max 72 h ${f.num(s.kpMax72h, 2)}.`,
+  },
+  en: {
+    house: 'Gladys house',
+    config: 'configuration',
+    recomputed: (where, source) => `Recomputed for ${where} (${source}).`,
+    nextPeak: 'Next peak:',
+    noaa: (steps, f, s) =>
+      `NOAA reachable: ${steps} 3-hour steps. Current Kp ${f.num(s.kpNow, 2)}, max 24 h ${f.num(s.kpMax24h, 2)}, max 72 h ${f.num(s.kpMax72h, 2)}.`,
+  },
+  de: {
+    house: 'Gladys-Zuhause',
+    config: 'Konfiguration',
+    recomputed: (where, source) => `Neu berechnet für ${where} (${source}).`,
+    nextPeak: 'Nächstes Maximum:',
+    noaa: (steps, f, s) =>
+      `NOAA erreichbar: ${steps} Schritte zu 3 h. Aktueller Kp ${f.num(s.kpNow, 2)}, max. 24 h ${f.num(s.kpMax24h, 2)}, max. 72 h ${f.num(s.kpMax72h, 2)}.`,
+  },
+  es: {
+    house: 'vivienda de Gladys',
+    config: 'configuración',
+    recomputed: (where, source) => `Recalculado para ${where} (${source}).`,
+    nextPeak: 'Próximo máximo:',
+    noaa: (steps, f, s) =>
+      `NOAA accesible: ${steps} intervalos de 3 h. Kp actual ${f.num(s.kpNow, 2)}, máx. 24 h ${f.num(s.kpMax24h, 2)}, máx. 72 h ${f.num(s.kpMax72h, 2)}.`,
+  },
+};
+
+/** One message per language, built from the formatter of that language. */
+function inEveryLanguage(build) {
+  return Object.fromEntries(
+    LANGUAGES.map((lang) => [lang, build(TEXTS[lang], createFormatter(lang))]),
+  );
+}
 
 export const ACTIONS = {
   /**
@@ -21,23 +65,13 @@ export const ACTIONS = {
     }
     await scheduler.recompute();
     const { rare, night } = engine.getSnapshot();
-    const fr = createFormatter('fr');
-    const en = createFormatter('en');
     const where = `${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}`;
-    const source = {
-      fr: location.source === 'house' ? 'maison Gladys' : 'configuration',
-      en: location.source === 'house' ? 'Gladys house' : 'configuration',
-    };
-    return {
-      fr:
-        `Recalculé pour ${where} (${source.fr}).\n` +
-        `${fr.solarEclipse(rare.solar)}\n${fr.lunarEclipse(rare.lunar)}\n` +
-        `Prochain pic : ${fr.nextPeak(night.nextPeak)}`,
-      en:
-        `Recomputed for ${where} (${source.en}).\n` +
-        `${en.solarEclipse(rare.solar)}\n${en.lunarEclipse(rare.lunar)}\n` +
-        `Next peak: ${en.nextPeak(night.nextPeak)}`,
-    };
+    return inEveryLanguage(
+      (t, f) =>
+        `${t.recomputed(where, location.source === 'house' ? t.house : t.config)}\n` +
+        `${f.solarEclipse(rare.solar)}\n${f.lunarEclipse(rare.lunar)}\n` +
+        `${t.nextPeak} ${f.nextPeak(night.nextPeak)}`,
+    );
   },
 
   /**
@@ -46,11 +80,6 @@ export const ACTIONS = {
   async test_noaa({ config, fetchImpl }) {
     const rows = await fetchKp({ fetchImpl });
     const s = summarize(rows, new Date(), { alertKp: config.aurora_kp_alert });
-    const fr = createFormatter('fr');
-    const en = createFormatter('en');
-    return {
-      fr: `NOAA joignable : ${rows.length} pas de 3 h. Kp actuel ${fr.num(s.kpNow, 2)}, max 24 h ${fr.num(s.kpMax24h, 2)}, max 72 h ${fr.num(s.kpMax72h, 2)}. ${fr.auroraNextAlert(s)}`,
-      en: `NOAA reachable: ${rows.length} 3-hour steps. Current Kp ${en.num(s.kpNow, 2)}, max 24 h ${en.num(s.kpMax24h, 2)}, max 72 h ${en.num(s.kpMax72h, 2)}. ${en.auroraNextAlert(s)}`,
-    };
+    return inEveryLanguage((t, f) => `${t.noaa(rows.length, f, s)} ${f.auroraNextAlert(s)}`);
   },
 };
