@@ -20,7 +20,7 @@ test('numbers arriving as strings are parsed and clamped', () => {
 
 test('language falls back to French on anything unknown', () => {
   assert.equal(normalizeConfig({ language: 'EN' }).language, 'en');
-  assert.equal(normalizeConfig({ language: 'de' }).language, 'fr');
+  assert.equal(normalizeConfig({ language: 'it' }).language, 'fr');
 });
 
 test('booleans accept the string form sent by some forms', () => {

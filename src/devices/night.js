@@ -13,7 +13,7 @@ import {
 
 export const DEVICE_TYPE = 'astronomy-night';
 
-const NAMES = {
+export const NAMES = {
   fr: {
     device: 'Nuit d’observation',
     summary: 'Résumé de la nuit',
@@ -41,6 +41,34 @@ const NAMES = {
     score: 'Sky quality',
     scoreTonight: 'Best sky quality tonight',
     moon: 'Moon illumination',
+  },
+  de: {
+    device: 'Beobachtungsnacht',
+    summary: 'Zusammenfassung der Nacht',
+    civilDusk: 'Bürgerliche Abenddämmerung',
+    nauticalDusk: 'Nautische Abenddämmerung',
+    astroDusk: 'Astronomische Abenddämmerung',
+    astroDawn: 'Astronomische Morgendämmerung',
+    startIn: 'Mondloses Fenster in',
+    windowDuration: 'Dauer des mondlosen Fensters',
+    darkNow: 'Dunkler Himmel jetzt',
+    score: 'Himmelsqualität',
+    scoreTonight: 'Beste Himmelsqualität der Nacht',
+    moon: 'Mondbeleuchtung',
+  },
+  es: {
+    device: 'Noche de observación',
+    summary: 'Resumen de la noche',
+    civilDusk: 'Crepúsculo civil',
+    nauticalDusk: 'Crepúsculo náutico',
+    astroDusk: 'Crepúsculo astronómico',
+    astroDawn: 'Alba astronómica',
+    startIn: 'Ventana sin Luna en',
+    windowDuration: 'Duración de la ventana sin Luna',
+    darkNow: 'Cielo oscuro ahora',
+    score: 'Calidad del cielo',
+    scoreTonight: 'Mejor calidad de la noche',
+    moon: 'Iluminación de la Luna',
   },
 };
 

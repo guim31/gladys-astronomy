@@ -83,7 +83,7 @@ redémarrage, au-delà il est abandonné.
 
 ## Configuration
 
-- **Langue des textes** : français ou anglais. Les noms de capteurs sont fixés à
+- **Langue des textes** : français, anglais, allemand ou espagnol. Les noms de capteurs sont fixés à
   la création de l'appareil ; pour les renommer après un changement de langue,
   supprimez puis rajoutez l'appareil.
 - **Rafraîchissement des comptes à rebours** : cadence des valeurs qui bougent

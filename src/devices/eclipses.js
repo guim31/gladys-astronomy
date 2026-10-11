@@ -14,7 +14,7 @@ import {
 
 export const DEVICE_TYPE = 'astronomy-eclipses';
 
-const NAMES = {
+export const NAMES = {
   fr: {
     device: 'Éclipses',
     solar: 'Prochaine éclipse solaire',
@@ -40,6 +40,32 @@ const NAMES = {
     transit: 'Next transit',
     transitDays: 'Transit in',
     today: 'Eclipse today',
+  },
+  de: {
+    device: 'Finsternisse',
+    solar: 'Nächste Sonnenfinsternis',
+    solarKind: 'Art (Sonne)',
+    solarDays: 'Sonnenfinsternis in',
+    solarObscuration: 'Bedeckung (Sonne)',
+    lunar: 'Nächste Mondfinsternis',
+    lunarKind: 'Art (Mond)',
+    lunarDays: 'Mondfinsternis in',
+    transit: 'Nächster Transit',
+    transitDays: 'Transit in',
+    today: 'Finsternis heute',
+  },
+  es: {
+    device: 'Eclipses',
+    solar: 'Próximo eclipse solar',
+    solarKind: 'Tipo (solar)',
+    solarDays: 'Eclipse solar en',
+    solarObscuration: 'Oscurecimiento (solar)',
+    lunar: 'Próximo eclipse lunar',
+    lunarKind: 'Tipo (lunar)',
+    lunarDays: 'Eclipse lunar en',
+    transit: 'Próximo tránsito',
+    transitDays: 'Tránsito en',
+    today: 'Eclipse hoy',
   },
 };
 

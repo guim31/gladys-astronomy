@@ -1,7 +1,12 @@
 [
   {
     "code": "QUA",
-    "name": { "en": "Quadrantids", "fr": "Quadrantides" },
+    "name": {
+      "en": "Quadrantids",
+      "fr": "Quadrantides",
+      "de": "Quadrantiden",
+      "es": "Cuadrántidas"
+    },
     "solarLongitude": 283.16,
     "zhr": 80,
     "activity": { "start": "12-28", "end": "01-12" },
@@ -11,7 +16,7 @@
   },
   {
     "code": "LYR",
-    "name": { "en": "Lyrids", "fr": "Lyrides" },
+    "name": { "en": "Lyrids", "fr": "Lyrides", "de": "Lyriden", "es": "Líridas" },
     "solarLongitude": 32.32,
     "zhr": 18,
     "activity": { "start": "04-14", "end": "04-30" },
@@ -21,7 +26,12 @@
   },
   {
     "code": "ETA",
-    "name": { "en": "Eta Aquariids", "fr": "Êta Aquarides" },
+    "name": {
+      "en": "Eta Aquariids",
+      "fr": "Êta Aquarides",
+      "de": "Eta-Aquariiden",
+      "es": "Eta Acuáridas"
+    },
     "solarLongitude": 45.5,
     "zhr": 50,
     "activity": { "start": "04-19", "end": "05-28" },
@@ -31,7 +41,12 @@
   },
   {
     "code": "SDA",
-    "name": { "en": "Southern Delta Aquariids", "fr": "Delta Aquarides Sud" },
+    "name": {
+      "en": "Southern Delta Aquariids",
+      "fr": "Delta Aquarides Sud",
+      "de": "Südliche Delta-Aquariiden",
+      "es": "Delta Acuáridas del Sur"
+    },
     "solarLongitude": 126,
     "zhr": 25,
     "activity": { "start": "07-12", "end": "08-23" },
@@ -41,7 +56,12 @@
   },
   {
     "code": "CAP",
-    "name": { "en": "Alpha Capricornids", "fr": "Alpha Capricornides" },
+    "name": {
+      "en": "Alpha Capricornids",
+      "fr": "Alpha Capricornides",
+      "de": "Alpha-Capricorniden",
+      "es": "Alfa Capricórnidas"
+    },
     "solarLongitude": 127,
     "zhr": 5,
     "activity": { "start": "07-03", "end": "08-15" },
@@ -51,7 +71,7 @@
   },
   {
     "code": "PER",
-    "name": { "en": "Perseids", "fr": "Perséides" },
+    "name": { "en": "Perseids", "fr": "Perséides", "de": "Perseiden", "es": "Perseidas" },
     "solarLongitude": 140.0,
     "zhr": 100,
     "activity": { "start": "07-17", "end": "08-24" },
@@ -61,7 +81,7 @@
   },
   {
     "code": "DRA",
-    "name": { "en": "Draconids", "fr": "Draconides" },
+    "name": { "en": "Draconids", "fr": "Draconides", "de": "Draconiden", "es": "Dracónidas" },
     "solarLongitude": 195.4,
     "zhr": 10,
     "activity": { "start": "10-06", "end": "10-10" },
@@ -71,7 +91,7 @@
   },
   {
     "code": "ORI",
-    "name": { "en": "Orionids", "fr": "Orionides" },
+    "name": { "en": "Orionids", "fr": "Orionides", "de": "Orioniden", "es": "Oriónidas" },
     "solarLongitude": 208,
     "zhr": 20,
     "activity": { "start": "10-02", "end": "11-07" },
@@ -81,7 +101,12 @@
   },
   {
     "code": "STA",
-    "name": { "en": "Southern Taurids", "fr": "Taurides Sud" },
+    "name": {
+      "en": "Southern Taurids",
+      "fr": "Taurides Sud",
+      "de": "Südliche Tauriden",
+      "es": "Táuridas del Sur"
+    },
     "solarLongitude": 223,
     "zhr": 5,
     "activity": { "start": "09-10", "end": "11-20" },
@@ -91,7 +116,12 @@
   },
   {
     "code": "NTA",
-    "name": { "en": "Northern Taurids", "fr": "Taurides Nord" },
+    "name": {
+      "en": "Northern Taurids",
+      "fr": "Taurides Nord",
+      "de": "Nördliche Tauriden",
+      "es": "Táuridas del Norte"
+    },
     "solarLongitude": 230,
     "zhr": 5,
     "activity": { "start": "10-20", "end": "12-10" },
@@ -101,7 +131,7 @@
   },
   {
     "code": "LEO",
-    "name": { "en": "Leonids", "fr": "Léonides" },
+    "name": { "en": "Leonids", "fr": "Léonides", "de": "Leoniden", "es": "Leónidas" },
     "solarLongitude": 235.27,
     "zhr": 10,
     "activity": { "start": "11-06", "end": "11-30" },
@@ -111,7 +141,7 @@
   },
   {
     "code": "GEM",
-    "name": { "en": "Geminids", "fr": "Géminides" },
+    "name": { "en": "Geminids", "fr": "Géminides", "de": "Geminiden", "es": "Gemínidas" },
     "solarLongitude": 262.2,
     "zhr": 150,
     "activity": { "start": "12-04", "end": "12-17" },
@@ -121,7 +151,7 @@
   },
   {
     "code": "URS",
-    "name": { "en": "Ursids", "fr": "Ursides" },
+    "name": { "en": "Ursids", "fr": "Ursides", "de": "Ursiden", "es": "Úrsidas" },
     "solarLongitude": 270.7,
     "zhr": 10,
     "activity": { "start": "12-17", "end": "12-26" },

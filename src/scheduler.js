@@ -45,6 +45,8 @@ export const MESSAGES = {
   noLocation: {
     en: 'No coordinates: set the location of your house in Gladys (Settings > Houses), or type latitude/longitude in the configuration.',
     fr: 'Aucune coordonnée : localisez votre maison dans Gladys (Paramètres > Maisons), ou saisissez latitude/longitude dans la configuration.',
+    de: 'Keine Koordinaten: Lege den Standort deines Zuhauses in Gladys fest (Einstellungen > Zuhause) oder gib Breiten- und Längengrad in der Konfiguration ein.',
+    es: 'Sin coordenadas: indique la ubicación de su vivienda en Gladys (Configuración > Viviendas) o introduzca la latitud y la longitud en la configuración.',
   },
 };
 

@@ -106,10 +106,122 @@ export const STRINGS = {
     daysUnit: 'd',
     none: 'none',
   },
+  de: {
+    noLocation:
+      'Lege den Standort deines Zuhauses in Gladys fest (Einstellungen > Zuhause), um den Himmel zu sehen.',
+    solarEclipse: (kind) => germanEclipse(kind, 'Sonnenfinsternis'),
+    lunarEclipse: (kind) => germanEclipse(kind, 'Mondfinsternis'),
+    meteorPeak: (name) => `Maximum der ${name}`,
+    conjunction: 'Konjunktion',
+    visible: 'sichtbar',
+    notVisible: 'nicht sichtbar',
+    inDays: (days) => (days === 0 ? 'Heute' : days === 1 ? 'Morgen' : `in ${days} Tagen`),
+    nightOf: (date, score) => `Nacht vom ${date} · bester Himmel ${score}/10`,
+    skyNow: 'Himmel jetzt',
+    moonlessFrom: 'Mondlos ab',
+    moonlessLength: 'Dunkler Himmel',
+    moon: 'Mond',
+    planets: 'Planeten',
+    noPlanet: 'keiner mit bloßem Auge',
+    skyQuality: 'Himmelsqualität',
+    astroDusk: 'Volle Dunkelheit',
+    moonlessStart: 'Mondlos',
+    shower: 'Aktiver Strom',
+    noNight: 'Keine Nacht: Die Sonne geht nicht unter.',
+    agendaCaption: (count, days) => `${count} Ereignis${count > 1 ? 'se' : ''} · ${days} Tage`,
+    agendaEmpty: 'Keine Ereignisse in diesem Zeitraum.',
+    kpNow: 'Kp aktuell',
+    kpMax24: 'Kp max. 24 h',
+    kpMax72: 'Kp max. 72 h',
+    kpSeries: 'Kp-Index',
+    alert: 'Alarm',
+    alertLevel: 'Stufe',
+    levels: ['Ruhig', 'Aktiv', 'Sturm', 'Starker Sturm'],
+    nextAlert: 'Nächster Alarm',
+    source: 'Daten',
+    auroraDisabled:
+      'Die Polarlichtvorhersage ist in der Konfiguration der Integration ausgeschaltet.',
+    auroraUnavailable: 'Die NOAA antwortet nicht und es sind keine aktuellen Daten im Cache.',
+    eclipseIn: 'In',
+    obscuration: 'Bedeckung',
+    altitudeAtPeak: 'Höhe im Maximum',
+    date: 'Datum',
+    partialBegin: 'Beginn',
+    totalBegin: 'Totalität',
+    peak: 'Maximum',
+    end: 'Ende',
+    visibleFromTo: 'Sichtbar',
+    eclipseBody: (e, fmt) =>
+      e.body === 'sun'
+        ? `Bis zu ${fmt.num(e.obscuration * 100, 0)} % der Sonne verdeckt, im Maximum ${fmt.num(e.altitude, 0)}° über dem Horizont. Schau niemals ohne zertifizierten Filter hin.`
+        : `Der Mond steht im Maximum ${fmt.num(e.altitude, 0)}° über dem Horizont. Mit bloßem Auge sichtbar.`,
+    daysUnit: 'T',
+    none: 'keiner',
+  },
+  es: {
+    noLocation:
+      'Indique la ubicación de su vivienda en Gladys (Configuración > Viviendas) para ver el cielo.',
+    solarEclipse: (kind) => `Eclipse solar ${kind}`,
+    lunarEclipse: (kind) => `Eclipse lunar ${kind}`,
+    meteorPeak: (name) => `Máximo de las ${name}`,
+    conjunction: 'Conjunción',
+    visible: 'visible',
+    notVisible: 'no visible',
+    inDays: (days) => (days === 0 ? 'Hoy' : days === 1 ? 'Mañana' : `en ${days} días`),
+    nightOf: (date, score) => `Noche del ${date} · mejor cielo ${score}/10`,
+    skyNow: 'Cielo ahora',
+    moonlessFrom: 'Sin Luna desde',
+    moonlessLength: 'Cielo oscuro',
+    moon: 'Luna',
+    planets: 'Planetas',
+    noPlanet: 'ninguno a simple vista',
+    skyQuality: 'Calidad del cielo',
+    astroDusk: 'Noche cerrada',
+    moonlessStart: 'Sin Luna',
+    shower: 'Lluvia activa',
+    noNight: 'Sin noche: el Sol no se pone.',
+    agendaCaption: (count, days) => `${count} evento${count > 1 ? 's' : ''} · ${days} días`,
+    agendaEmpty: 'Ningún evento en este periodo.',
+    kpNow: 'Kp actual',
+    kpMax24: 'Kp máx. 24 h',
+    kpMax72: 'Kp máx. 72 h',
+    kpSeries: 'Índice Kp',
+    alert: 'Alerta',
+    alertLevel: 'Nivel',
+    levels: ['Calma', 'Activo', 'Tormenta', 'Tormenta fuerte'],
+    nextAlert: 'Próxima alerta',
+    source: 'Datos',
+    auroraDisabled:
+      'La previsión de auroras está desactivada en la configuración de la integración.',
+    auroraUnavailable: 'La NOAA no responde y no hay datos recientes en caché.',
+    eclipseIn: 'Dentro de',
+    obscuration: 'Oscurecimiento',
+    altitudeAtPeak: 'Altura en el máximo',
+    date: 'Fecha',
+    partialBegin: 'Inicio',
+    totalBegin: 'Totalidad',
+    peak: 'Máximo',
+    end: 'Fin',
+    visibleFromTo: 'Visible',
+    eclipseBody: (e, fmt) =>
+      e.body === 'sun'
+        ? `Hasta un ${fmt.num(e.obscuration * 100, 0)} % del Sol oculto, a ${fmt.num(e.altitude, 0)}° sobre el horizonte en el máximo. No mire nunca sin un filtro homologado.`
+        : `La Luna estará a ${fmt.num(e.altitude, 0)}° sobre el horizonte en el máximo. Visible a simple vista.`,
+    daysUnit: 'd',
+    none: 'ninguna',
+  },
 };
 
 function capitalize(text) {
   return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+// German adjectives decline before the noun: "partiell" -> "Partielle
+// Sonnenfinsternis"; the penumbral kind is a compound noun.
+const GERMAN_KIND = { partiell: 'Partielle', ringförmig: 'Ringförmige', total: 'Totale' };
+
+function germanEclipse(kind, noun) {
+  return GERMAN_KIND[kind] ? `${GERMAN_KIND[kind]} ${noun}` : `${kind}-${noun}`;
 }
 
 export function strings(language) {
