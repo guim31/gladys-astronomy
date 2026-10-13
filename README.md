@@ -53,6 +53,11 @@ configuration. The user documentation lives in [docs/en.md](docs/en.md) /
 - Widget, trigger and action keys are part of the users' dashboards and scenes:
   never rename or remove one after a release.
 
+Logs: at the default `info` level, only the lifecycle (start, observer,
+schedule) and the problems, once when they start and once when they are over
+(`src/failure-log.js`). Each cycle, published state and scene trigger is a
+`debug` line, shown with `LOG_LEVEL=debug`.
+
 ## Development
 
 ```bash

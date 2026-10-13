@@ -16,6 +16,10 @@
 // an exception there is a bug, logged and retried at the next tick. The NOAA
 // fetch degrades the aurora device (cache, then "unavailable") and never
 // flags the integration as disconnected.
+//
+// Logs: a normal cycle writes nothing at the info level (debug only, with
+// LOG_LEVEL=debug). A failing scope is logged once when it starts failing and
+// once when it works again, not at every tick.
 // -----------------------------------------------------------------------------
 
 import { createLogger } from '@gladysassistant/integration-sdk';
@@ -30,6 +34,7 @@ import { createFormatter } from './formatters.js';
 import { nextLocalTime } from './time.js';
 import { planEvents } from './scene-events.js';
 import { REFRESH_AFTER } from './widgets/index.js';
+import { createFailureLog } from './failure-log.js';
 
 const logger = createLogger({ name: 'scheduler' });
 
@@ -71,6 +76,7 @@ export async function startScheduler({
   const timers = [];
   const running = new Set();
   const lastSent = new Map(); // feature external id -> { value, at }
+  const failures = new Map(); // scope label -> createFailureLog
 
   function stop() {
     stopped = true;
@@ -84,7 +90,7 @@ export async function startScheduler({
 
   /**
    * Publish only what changed (or is older than REPUBLISH_UNCHANGED_MS), in
-   * batches the core accepts.
+   * batches the core accepts. Resolves with the number of states sent.
    */
   async function publish(states, { force = false } = {}) {
     const at = now().getTime();
@@ -102,6 +108,7 @@ export async function startScheduler({
         lastSent.set(s.device_feature_external_id, { value: s.text ?? s.state, at });
       }
     }
+    return fresh.length;
   }
 
   async function guarded(label, fn) {
@@ -109,10 +116,16 @@ export async function startScheduler({
       return;
     }
     running.add(label);
+    if (!failures.has(label)) {
+      failures.set(label, createFailureLog(logger, label, { level: 'error' }));
+    }
+    const failure = failures.get(label);
     try {
-      await fn();
+      const sent = await fn();
+      failure.ok();
+      logger.debug(`${label}: ${sent ?? 0} states published`);
     } catch (err) {
-      logger.error(`${label} failed: ${err.message}`, err);
+      failure.fail(err);
     } finally {
       running.delete(label);
     }
@@ -126,7 +139,7 @@ export async function startScheduler({
       try {
         gladys.requestWidgetRefresh?.(key);
       } catch (err) {
-        logger.warn(`requestWidgetRefresh ${key}: ${err.message}`);
+        logger.debug(`requestWidgetRefresh ${key}: ${err.message}`);
       }
     }
   }
@@ -139,9 +152,12 @@ export async function startScheduler({
     await guarded('rare', async () => {
       engine.computeRare();
       engine.computeLive();
-      await publish(statesFor(gladys, snapshot(), config, fmt, SCOPES.rare), { force });
+      const sent = await publish(statesFor(gladys, snapshot(), config, fmt, SCOPES.rare), {
+        force,
+      });
       await replanEvents();
       nudge('rare');
+      return sent;
     });
   }
 
@@ -149,16 +165,19 @@ export async function startScheduler({
     await guarded('night', async () => {
       engine.computeNight();
       engine.computeLive();
-      await publish(statesFor(gladys, snapshot(), config, fmt, SCOPES.night), { force });
+      const sent = await publish(statesFor(gladys, snapshot(), config, fmt, SCOPES.night), {
+        force,
+      });
       await replanEvents();
       nudge('night');
+      return sent;
     });
   }
 
   async function liveTick({ force = false } = {}) {
     await guarded('live', async () => {
       engine.computeLive();
-      await publish(statesFor(gladys, snapshot(), config, fmt, SCOPES.live), { force });
+      return publish(statesFor(gladys, snapshot(), config, fmt, SCOPES.live), { force });
     });
   }
 
@@ -168,10 +187,13 @@ export async function startScheduler({
     }
     await guarded('aurora', async () => {
       await engine.refreshAurora();
-      await publish(statesFor(gladys, snapshot(), config, fmt, SCOPES.aurora), { force });
+      const sent = await publish(statesFor(gladys, snapshot(), config, fmt, SCOPES.aurora), {
+        force,
+      });
       await gladys.publishTransports([aurora.transport(gladys, snapshot())]);
       await events?.onAuroraSummary(snapshot().aurora?.summary, fmt);
       nudge('aurora');
+      return sent;
     });
   }
 
@@ -212,7 +234,7 @@ export async function startScheduler({
       (d) => d.deviceExternalId(gladys) === device?.external_id,
     );
     if (!target) {
-      logger.warn(`Poll requested for an unknown device: ${device?.external_id}`);
+      logger.debug(`Poll requested for an unknown device: ${device?.external_id}`);
       return;
     }
     await guarded(`poll ${target.key}`, async () => {
@@ -222,7 +244,7 @@ export async function startScheduler({
         engine.computeNight();
         engine.computeLive();
       }
-      await publish(statesFor(gladys, snapshot(), config, fmt, [target]), { force: true });
+      return publish(statesFor(gladys, snapshot(), config, fmt, [target]), { force: true });
     });
   }
 

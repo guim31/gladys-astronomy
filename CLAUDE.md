@@ -2,7 +2,7 @@
 
 Éclipses, planètes, étoiles filantes, nuit d'observation, saisons et aurores pour votre maison.
 
-Intégration externe pour [Gladys Assistant](https://gladysassistant.com), bâtie sur le template officiel `GladysAssistant/integration-template-js` (SDK `@gladysassistant/integration-sdk` ^0.14.0, `gladys_version` `>=5.1.0`). Mainteneur : Guilhem (`guim31`).
+Intégration externe pour [Gladys Assistant](https://gladysassistant.com), bâtie sur le template officiel `GladysAssistant/integration-template-js` (SDK `@gladysassistant/integration-sdk` ^0.15.0, `gladys_version` `>=5.1.0`). Mainteneur : Guilhem (`guim31`).
 
 Ce fichier rassemble ce qu'une session de code doit savoir et qui ne se lit pas dans le code : choix de conception, faits vérifiés en réel, pièges déjà payés. Le compléter quand un nouveau piège est découvert.
 
@@ -41,6 +41,25 @@ et orbite, Aurores), qui gardent historique et seuils, plus quatre widgets : `as
   tutoie, l'espagnol vouvoie (décision de Guilhem, 11/10/2026). `test/i18n.test.js` refuse un objet
   multilingue sans les quatre, un texte vide ou trop long, un « Sie »/« Ihr » allemand, et un
   message en ligne du code (`{ en, fr }`) qui oublie une langue.
+- **Polling** : les six appareils sont publiés en `should_poll: false`, sans `poll_frequency`, et
+  `src/scheduler.js` pousse les états par ses propres minuteurs. Ils ne dépendent donc pas du
+  piège du cœur 5.2.0 (GladysAssistant/Gladys#3198 : un appareil créé sans `should_poll` n'est
+  jamais sondé). `onPoll` reste un repli inoffensif (appareil inconnu ou intégration pas encore
+  démarrée : rien, sans erreur). `test/polling-logs.test.js` le prouve avec le faux Gladys du SDK
+  (`@gladysassistant/integration-sdk/testing`), qui applique aussi les contrôles du cœur. Les
+  autres tests gardent le faux maison `test/helpers/fakeGladys.js`.
+- **Logs** (revue SDK 0.15, 13/10/2026) : en `info`, seulement le cycle de vie (démarrage,
+  observateur, planning, action « Rechercher ») et les problèmes, dédupliqués par
+  `src/failure-log.js` (une ligne au premier échec, une au retour : NOAA, cache, portée de
+  calcul, démarrage). Chaque cycle, état publié et déclencheur de scène est en `debug`
+  (`LOG_LEVEL=debug`). `test/polling-logs.test.js` vérifie que deux heures de cycles n'écrivent
+  rien et qu'une panne NOAA n'écrit qu'une ligne.
+- La déduplication des états reste celle du planificateur (`publish`, renvoi d'une valeur
+  inchangée après 30 min, `force` pour tout renvoyer) : `publishChangedStates` du SDK 0.15 ferait
+  la même chose, mais `force` et le faux maison des tests demanderaient plus de code.
+- `CHANGELOG.md` (créé le 13/10/2026) : ce dépôt d'ancienne génération n'a pas
+  `.github/scripts/release.mjs`, donc `outils/release.sh` ne s'y applique pas ; on publie par
+  Actions → Release, et les notes de version viennent des PR ou de `.github/release-notes/`.
 - Cover : `cover.jpg` 800×534. Le PNG d'origine pesait 468 Ko, au-delà de la limite.
 
 ## Travailler sur ce dépôt
