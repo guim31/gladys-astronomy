@@ -199,7 +199,7 @@ export function createEventScheduler({ gladys, dataDir, now = () => new Date() }
   async function publish(key, id, data) {
     try {
       await gladys.publishSceneEvent(key, data);
-      logger.info(`Scene event ${id}`);
+      logger.debug(`Scene event ${id}`);
     } catch (err) {
       if (err?.status !== 400 && err?.status !== 404) {
         logger.warn(`Scene event ${id} failed: ${err.message}`);

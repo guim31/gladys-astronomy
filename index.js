@@ -29,6 +29,7 @@ import { ACTIONS } from './src/actions.js';
 import { WIDGETS } from './src/widgets/index.js';
 import { SCENE_ACTIONS } from './src/scene-actions.js';
 import { createEventScheduler } from './src/scene-events.js';
+import { createFailureLog } from './src/failure-log.js';
 
 const DATA_DIR = process.env.DATA_DIR || '/data';
 const LOCATION_RETRY_MS = 10 * 60 * 1000;
@@ -40,9 +41,13 @@ let location = null;
 let engine = null;
 let scheduler = null; // { stop, poll, recompute } returned by startScheduler
 let retryTimer = null;
+// The missing-location message is logged once, not at every 10-minute retry.
+let noLocationLogged = false;
 // Serializes start/stop so a config update racing the connection handler
 // never leaves two schedulers running.
 let lifecycle = Promise.resolve();
+// A start failing at every 60-second retry is logged once, then once fixed.
+const startFailure = createFailureLog(logger, 'Start', { level: 'error' });
 
 function stopEverything() {
   if (scheduler) {
@@ -63,12 +68,18 @@ async function restart() {
   stopEverything();
   location = await resolveLocation(gladys, config, { logger });
   if (!location) {
-    logger.info('No house coordinates yet, retrying in 10 minutes');
+    if (noLocationLogged) {
+      logger.debug('Still no house coordinates, retrying in 10 minutes');
+    } else {
+      noLocationLogged = true;
+      logger.info('No house coordinates yet, retrying every 10 minutes');
+    }
     await gladys.setConnectionStatus(false, MESSAGES.noLocation);
     retryTimer = setTimeout(() => queue(restart), LOCATION_RETRY_MS);
     retryTimer.unref?.();
     return;
   }
+  noLocationLogged = false;
   logger.info(
     `Observer: ${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)} ` +
       `(${location.source}${location.houseName ? `: ${location.houseName}` : ''}), TZ=${process.env.TZ || 'UTC'}`,
@@ -78,8 +89,9 @@ async function restart() {
   try {
     scheduler = await startScheduler({ gladys, config, engine, events });
     await gladys.setConnectionStatus(true);
+    startFailure.ok();
   } catch (err) {
-    logger.error('Start failed', err);
+    startFailure.fail(err);
     events.stop();
     stopEverything();
     await gladys
@@ -111,10 +123,13 @@ gladys.onScanRequest(async () => {
 // --- Poll: fallback only ------------------------------------------------------
 // Devices are published with `should_poll: false` (see src/devices/), so the
 // core scheduler never calls this. If a user enables polling from the device
-// page anyway, answer with a fresh computation rather than "not implemented".
+// page anyway, answer with a fresh computation rather than "not implemented";
+// before the start (no location yet), answer quietly: the scheduler publishes
+// everything as soon as it starts.
 gladys.onPoll(async (device) => {
   if (!scheduler) {
-    throw new Error('astronomy not started yet (no location?)');
+    logger.debug(`Poll of ${device?.external_id} ignored: not started yet`);
+    return;
   }
   await scheduler.poll(device);
 });

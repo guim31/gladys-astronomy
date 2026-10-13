@@ -21,6 +21,7 @@ import { upcomingConjunctions } from './astro/conjunctions.js';
 import { activeShowers, upcomingPeaks, moonAtPeak, radiantAltitude } from './astro/meteors.js';
 import { fetchKp, summarize } from './aurora/noaa.js';
 import { localMidnight, localDayKey } from './time.js';
+import { createFailureLog } from './failure-log.js';
 
 const logger = createLogger({ name: 'engine' });
 
@@ -45,6 +46,9 @@ function minutesUntil(date, now) {
 export function createEngine({ config, location, dataDir, now = () => new Date(), fetchImpl }) {
   const observer = makeObserver(location);
   const cachePath = path.join(dataDir, 'noaa-kp.json');
+  // One line when NOAA (or the cache file) starts failing, one when it is back.
+  const noaaFailure = createFailureLog(logger, 'NOAA Kp fetch');
+  const cacheFailure = createFailureLog(logger, 'NOAA cache write');
   const snapshot = {
     location,
     computedAt: { rare: null, night: null, live: null, aurora: null },
@@ -178,8 +182,9 @@ export function createEngine({ config, location, dataDir, now = () => new Date()
     try {
       await mkdir(dataDir, { recursive: true });
       await writeFile(cachePath, JSON.stringify({ fetchedAt, rows }));
+      cacheFailure.ok();
     } catch (err) {
-      logger.warn(`Cannot write the NOAA cache: ${err.message}`);
+      cacheFailure.fail(err);
     }
   }
 
@@ -197,10 +202,12 @@ export function createEngine({ config, location, dataDir, now = () => new Date()
       rows = await fetchKp({ fetchImpl });
       fetchedAt = at;
       source = 'noaa';
+      noaaFailure.ok();
+      logger.debug(`NOAA Kp forecast: ${rows.length} rows`);
       await writeCache(fetchedAt, rows);
     } catch (err) {
       error = err.message;
-      logger.warn(`NOAA Kp fetch failed: ${err.message}`);
+      noaaFailure.fail(err);
       const cached = await readCache();
       if (cached && at - cached.fetchedAt <= AURORA_CACHE_MAX_AGE_MS) {
         rows = cached.rows;
