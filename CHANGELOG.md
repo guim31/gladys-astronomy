@@ -7,6 +7,12 @@ uses [semantic versioning](https://semver.org/). The notes of the versions up to
 
 ## [Unreleased]
 
+### Security
+
+- Rebuilt on Node.js 24.22.1, the October 2026 security release (remote code
+  execution in the Brotli decoder, CVE-2026-111497; TLS hostname and DNS
+  fixes).
+
 ### Changed
 
 - Quieter logs: at the default level they show the start, the schedule and the
