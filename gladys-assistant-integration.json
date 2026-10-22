@@ -8,8 +8,8 @@
     "de": "Finsternisse, Planeten, Sternschnuppen, Beobachtungsnacht, Jahreszeiten und Polarlichter bei dir.",
     "es": "Eclipses, planetas, estrellas fugaces, noches de observación, estaciones y auroras para su hogar."
   },
-  "version": "1.1.1",
-  "docker_image": "ghcr.io/guim31/gladys-astronomy:1.1.1",
+  "version": "1.1.2",
+  "docker_image": "ghcr.io/guim31/gladys-astronomy:1.1.2",
   "gladys_version": ">=5.1.0",
   "cover_image": "https://raw.githubusercontent.com/guim31/gladys-astronomy/main/cover.jpg",
   "categories": ["environment", "services"],
